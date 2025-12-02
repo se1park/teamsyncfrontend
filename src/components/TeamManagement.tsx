@@ -16,10 +16,12 @@ import "./TeamManagement.css";
 interface TeamManagementProps {
   onBack: () => void;
   onOpenCreateTeamModal: () => void;
+  onOpenInviteMemberModal: () => void;
 }
 
 export default function TeamManagement({
   onBack,
+  onOpenInviteMemberModal,
   onOpenCreateTeamModal,
 }: TeamManagementProps) {
   const [selectedTeam, setSelectedTeam] = useState("개발팀");
@@ -275,7 +277,10 @@ export default function TeamManagement({
                       className="member-search-input"
                     />
                   </div>
-                  <button className="add-member-button">
+                  <button
+                    className="add-member-button"
+                    onClick={onOpenInviteMemberModal}
+                  >
                     <UserPlus className="w-4 h-4" />
                     멤버 추가
                   </button>

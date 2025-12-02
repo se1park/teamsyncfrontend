@@ -91,6 +91,7 @@ export default function App() {
       {currentView === "teams" && (
         <TeamManagement
           onBack={() => handleNavigate("dashboard")}
+          onOpenInviteMemberModal={handleOpenInviteMemberModal}
           onOpenCreateTeamModal={handleOpenCreateTeamModal}
         />
       )}
