@@ -173,7 +173,10 @@ export default function Dashboard({
         <div className="space-y-2">
           <div className="flex items-center justify-between px-3">
             <span className="text-sm text-slate-600">팀</span>
-            <button className="p-1 hover:bg-white/50 rounded transition-colors">
+            <button
+              className="p-1 hover:bg-white/50 rounded transition-colors"
+              onClick={onOpenCreateTeamModal}
+            >
               <Plus className="w-4 h-4 text-slate-600" />
             </button>
           </div>
@@ -238,7 +241,10 @@ export default function Dashboard({
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="glass-card rounded-2xl p-6">
+          <button
+            onClick={() => onNavigate("calendar")}
+            className="glass-card rounded-2xl p-6 text-left hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+          >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center">
                 <Calendar className="w-5 h-5 text-indigo-600" />
@@ -247,9 +253,12 @@ export default function Dashboard({
             </div>
             <h3 className="text-2xl text-slate-900 mb-1">12</h3>
             <p className="text-sm text-slate-600">예정된 회의</p>
-          </div>
+          </button>
 
-          <div className="glass-card rounded-2xl p-6">
+          <button
+            onClick={() => onNavigate("teams")}
+            className="glass-card rounded-2xl p-6 text-left hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+          >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
                 <Users className="w-5 h-5 text-blue-600" />
@@ -258,9 +267,12 @@ export default function Dashboard({
             </div>
             <h3 className="text-2xl text-slate-900 mb-1">24</h3>
             <p className="text-sm text-slate-600">팀 멤버</p>
-          </div>
+          </button>
 
-          <div className="glass-card rounded-2xl p-6">
+          <button
+            onClick={() => onNavigate("chat")}
+            className="glass-card rounded-2xl p-6 text-left hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+          >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
                 <MessageSquare className="w-5 h-5 text-purple-600" />
@@ -269,9 +281,12 @@ export default function Dashboard({
             </div>
             <h3 className="text-2xl text-slate-900 mb-1">8</h3>
             <p className="text-sm text-slate-600">활성 회의방</p>
-          </div>
+          </button>
 
-          <div className="glass-card rounded-2xl p-6">
+          <button
+            onClick={() => onNavigate("summary")}
+            className="glass-card rounded-2xl p-6 text-left hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+          >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-pink-600" />
@@ -280,7 +295,7 @@ export default function Dashboard({
             </div>
             <h3 className="text-2xl text-slate-900 mb-1">18</h3>
             <p className="text-sm text-slate-600">AI 요약 생성</p>
-          </div>
+          </button>
         </div>
 
         {/* Content Grid */}
