@@ -13,8 +13,6 @@ import {
   Shield,
   CreditCard,
   Building2,
-  Palette,
-  Globe,
   ChevronLeft,
   Save,
   Trash2,

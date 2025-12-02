@@ -22,12 +22,14 @@ interface DashboardProps {
   onNavigate: (view: View) => void;
   onOpenCreateTeamModal: () => void;
   onOpenInviteMemberModal: () => void;
+  onNavigateToTeam: (team: { name: string; color: string }) => void;
 }
 
 export default function Dashboard({
   onNavigate,
   onOpenCreateTeamModal,
   onOpenInviteMemberModal,
+  onNavigateToTeam,
 }: DashboardProps) {
   const upcomingEvents = [
     {
@@ -179,6 +181,9 @@ export default function Dashboard({
             {teams.map((team) => (
               <button
                 key={team.name}
+                onClick={() =>
+                  onNavigateToTeam({ name: team.name, color: team.color })
+                }
                 className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/50 text-slate-700 transition-colors group"
               >
                 <div

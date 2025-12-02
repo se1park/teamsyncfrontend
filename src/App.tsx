@@ -11,6 +11,8 @@ import Settings from "./components/SettingsPage";
 import CreateTeamModal from "./components/CreateTeamModal";
 import InviteMemberModal from "./components/InviteMemberModal";
 
+import TeamDetailPage from "./components/TeamDetailPage";
+
 export type View =
   | "auth"
   | "dashboard"
@@ -18,7 +20,8 @@ export type View =
   | "chat"
   | "calendar"
   | "summary"
-  | "settings";
+  | "settings"
+  | "team-detail";
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>("auth");
@@ -28,12 +31,22 @@ export default function App() {
   const [isCreateTeamModalOpen, setIsCreateTeamModalOpen] = useState(false);
   const [isInviteMemberModalOpen, setIsInviteMemberModalOpen] = useState(false);
 
+  const [selectedTeam, setSelectedTeam] = useState<{
+    name: string;
+    color: string;
+  } | null>(null);
+
   const handleLogin = () => {
     setCurrentView("dashboard");
   };
 
   const handleNavigate = (view: View) => {
     setCurrentView(view);
+  };
+
+  const handleNavigateToTeam = (team: { name: string; color: string }) => {
+    setSelectedTeam(team);
+    setCurrentView("team-detail");
   };
 
   const handleOpenScheduleModal = () => {
@@ -86,6 +99,7 @@ export default function App() {
           onNavigate={handleNavigate}
           onOpenCreateTeamModal={handleOpenCreateTeamModal}
           onOpenInviteMemberModal={handleOpenInviteMemberModal}
+          onNavigateToTeam={handleNavigateToTeam}
         />
       )}
       {currentView === "teams" && (
@@ -112,6 +126,14 @@ export default function App() {
       )}
       {currentView === "settings" && (
         <Settings onBack={() => handleNavigate("dashboard")} />
+      )}
+      {currentView === "team-detail" && selectedTeam && (
+        <TeamDetailPage
+          teamName={selectedTeam.name}
+          teamColor={selectedTeam.color}
+          onBack={() => handleNavigate("dashboard")}
+          onNavigateToChat={() => handleNavigate("chat")}
+        />
       )}
 
       <ScheduleModal
