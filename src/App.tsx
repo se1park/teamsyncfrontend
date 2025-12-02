@@ -7,7 +7,9 @@ import CalendarView from "./components/CalendarView";
 import MeetingSummary from "./components/MeetingSummary";
 import ScheduleModal from "./components/ScheduleModal";
 import CreateScheduleModal from "./components/CreateScheduleModal";
-import SettingsPage from "./components/setting";
+import Settings from "./components/SettingsPage";
+import CreateTeamModal from "./components/CreateTeamModal";
+import InviteMemberModal from "./components/InviteMemberModal";
 
 export type View =
   | "auth"
@@ -23,6 +25,8 @@ export default function App() {
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [isCreateScheduleModalOpen, setIsCreateScheduleModalOpen] =
     useState(false);
+  const [isCreateTeamModalOpen, setIsCreateTeamModalOpen] = useState(false);
+  const [isInviteMemberModalOpen, setIsInviteMemberModalOpen] = useState(false);
 
   const handleLogin = () => {
     setCurrentView("dashboard");
@@ -48,6 +52,27 @@ export default function App() {
     setIsCreateScheduleModalOpen(false);
   };
 
+  const handleOpenCreateTeamModal = () => {
+    setIsCreateTeamModalOpen(true);
+  };
+
+  const handleCloseCreateTeamModal = () => {
+    setIsCreateTeamModalOpen(false);
+  };
+
+  const handleSaveTeam = (teamData: any) => {
+    console.log("Team created:", teamData);
+    setIsCreateTeamModalOpen(false);
+  };
+
+  const handleOpenInviteMemberModal = () => {
+    setIsInviteMemberModalOpen(true);
+  };
+
+  const handleCloseInviteMemberModal = () => {
+    setIsInviteMemberModalOpen(false);
+  };
+
   const handleSaveSchedule = () => {
     // Handle save schedule logic
     console.log("Schedule saved");
@@ -56,9 +81,18 @@ export default function App() {
   return (
     <>
       {currentView === "auth" && <AuthScreen onLogin={handleLogin} />}
-      {currentView === "dashboard" && <Dashboard onNavigate={handleNavigate} />}
+      {currentView === "dashboard" && (
+        <Dashboard
+          onNavigate={handleNavigate}
+          onOpenCreateTeamModal={handleOpenCreateTeamModal}
+          onOpenInviteMemberModal={handleOpenInviteMemberModal}
+        />
+      )}
       {currentView === "teams" && (
-        <TeamManagement onBack={() => handleNavigate("dashboard")} />
+        <TeamManagement
+          onBack={() => handleNavigate("dashboard")}
+          onOpenCreateTeamModal={handleOpenCreateTeamModal}
+        />
       )}
       {currentView === "chat" && (
         <ChatRoom
@@ -75,7 +109,9 @@ export default function App() {
       {currentView === "summary" && (
         <MeetingSummary onBack={() => handleNavigate("dashboard")} />
       )}
-      {currentView === "settings" && <SettingsPage />}
+      {currentView === "settings" && (
+        <Settings onBack={() => handleNavigate("dashboard")} />
+      )}
 
       <ScheduleModal
         isOpen={isScheduleModalOpen}
@@ -83,6 +119,16 @@ export default function App() {
         onSave={handleSaveSchedule}
       />
 
+      <CreateTeamModal
+        isOpen={isCreateTeamModalOpen}
+        onClose={handleCloseCreateTeamModal}
+        onSave={handleSaveTeam}
+      />
+
+      <InviteMemberModal
+        isOpen={isInviteMemberModalOpen}
+        onClose={handleCloseInviteMemberModal}
+      />
       <CreateScheduleModal
         isOpen={isCreateScheduleModalOpen}
         onClose={handleCloseCreateScheduleModal}

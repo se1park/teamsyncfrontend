@@ -15,9 +15,13 @@ import "./TeamManagement.css";
 
 interface TeamManagementProps {
   onBack: () => void;
+  onOpenCreateTeamModal: () => void;
 }
 
-export default function TeamManagement({ onBack }: TeamManagementProps) {
+export default function TeamManagement({
+  onBack,
+  onOpenCreateTeamModal,
+}: TeamManagementProps) {
   const [selectedTeam, setSelectedTeam] = useState("개발팀");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -166,7 +170,10 @@ export default function TeamManagement({ onBack }: TeamManagementProps) {
             </button>
             <div className="sidebar-title-row">
               <h2 className="sidebar-title">팀 관리</h2>
-              <button className="add-team-button">
+              <button
+                className="add-team-button"
+                onClick={onOpenCreateTeamModal}
+              >
                 <Plus className="w-4 h-4" />
               </button>
             </div>

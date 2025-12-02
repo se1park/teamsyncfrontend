@@ -20,9 +20,15 @@ import type { View } from "../App"; // App 경로에 맞게 수정
 
 interface DashboardProps {
   onNavigate: (view: View) => void;
+  onOpenCreateTeamModal: () => void;
+  onOpenInviteMemberModal: () => void;
 }
 
-export default function Dashboard({ onNavigate }: DashboardProps) {
+export default function Dashboard({
+  onNavigate,
+  onOpenCreateTeamModal,
+  onOpenInviteMemberModal,
+}: DashboardProps) {
   const upcomingEvents = [
     {
       id: 1,
@@ -209,13 +215,16 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
           </div>
           <div className="flex items-center gap-3">
             <Button
-              onClick={() => onNavigate("teams")}
               variant="outline"
               className="gap-2 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"
+              onClick={onOpenCreateTeamModal}
             >
               <Plus className="w-4 h-4" />팀 생성
             </Button>
-            <Button className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30">
+            <Button
+              className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
+              onClick={onOpenInviteMemberModal}
+            >
               <UserPlus className="w-4 h-4" />
               멤버 초대
             </Button>
