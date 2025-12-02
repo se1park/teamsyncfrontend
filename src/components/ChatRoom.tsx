@@ -25,12 +25,12 @@ import { toast } from "sonner";
 
 interface ChatRoomProps {
   onBack: () => void;
-  onOpenScheduleModal: () => void;
+  onOpenCreateScheduleModal?: () => void;
 }
 
 export default function ChatRoom({
   onBack,
-  onOpenScheduleModal,
+  onOpenCreateScheduleModal,
 }: ChatRoomProps) {
   const [message, setMessage] = useState("");
   const [showAISuggestion, setShowAISuggestion] = useState(true);
@@ -176,7 +176,7 @@ export default function ChatRoom({
   };
 
   const handleCreateSchedule = () => {
-    onOpenScheduleModal();
+    onOpenCreateScheduleModal?.();
   };
 
   const handleEndMeeting = () => {
@@ -480,7 +480,7 @@ export default function ChatRoom({
 
               <div className="flex gap-2">
                 <Button
-                  onClick={handleCreateSchedule}
+                  onClick={onOpenCreateScheduleModal}
                   className="flex-1 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
                 >
                   일정 생성
@@ -593,7 +593,7 @@ export default function ChatRoom({
             <Button
               variant="outline"
               className="w-full justify-start gap-3 h-auto p-3"
-              onClick={handleCreateRoom}
+              onClick={handleCreateSchedule}
             >
               <Calendar className="w-5 h-5 text-indigo-600" />
               <div className="text-left flex-1">

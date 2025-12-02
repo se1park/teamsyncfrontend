@@ -112,7 +112,7 @@ export default function App() {
       {currentView === "chat" && (
         <ChatRoom
           onBack={() => handleNavigate("dashboard")}
-          onOpenScheduleModal={handleOpenScheduleModal}
+          onOpenCreateScheduleModal={handleOpenCreateScheduleModal}
         />
       )}
       {currentView === "calendar" && (
