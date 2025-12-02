@@ -21,6 +21,7 @@ import {
   FileText,
   ChevronRight,
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface ChatRoomProps {
   onBack: () => void;
@@ -34,6 +35,7 @@ export default function ChatRoom({
   const [message, setMessage] = useState("");
   const [showAISuggestion, setShowAISuggestion] = useState(true);
   const [showAISummary, setShowAISummary] = useState(false);
+  const [showParticipants, setShowParticipants] = useState(false);
 
   const rooms = [
     { id: 1, name: "디자인 리뷰", team: "디자인팀", unread: 0 },
@@ -137,9 +139,51 @@ export default function ChatRoom({
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      // Handle send message
+      toast.success("메시지가 전송되었습니다");
       setMessage("");
     }
+  };
+
+  const handleCreateRoom = () => {
+    toast.success("새 회의방 만들기 기능은 준비 중입니다");
+  };
+
+  const handleShowParticipants = () => {
+    setShowParticipants(!showParticipants);
+    if (!showParticipants) {
+      toast.info("참여자 목록을 표시합니다");
+    }
+  };
+
+  const handleSettings = () => {
+    toast.info("회의방 설정");
+  };
+
+  const handleAttachFile = () => {
+    toast.info("파일 첨부 기능");
+  };
+
+  const handleAddEmoji = () => {
+    toast.info("이모지 선택");
+  };
+
+  const handleEditSchedule = () => {
+    toast.info("AI 제안을 수정합니다");
+  };
+
+  const handleViewFullSummary = () => {
+    toast.success("전체 회의 요약으로 이동합니다");
+  };
+
+  const handleCreateSchedule = () => {
+    onOpenScheduleModal();
+  };
+
+  const handleEndMeeting = () => {
+    toast.success("회의를 종료하고 AI 요약을 생성합니다");
+    setTimeout(() => {
+      setShowAISummary(true);
+    }, 500);
   };
 
   return (
@@ -158,6 +202,7 @@ export default function ChatRoom({
               <h2 className="text-xl text-slate-900">회의방</h2>
               <Button
                 size="sm"
+                onClick={handleCreateRoom}
                 className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white"
               >
                 <MessageSquare className="w-4 h-4" />
@@ -230,11 +275,16 @@ export default function ChatRoom({
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={handleShowParticipants}
+                >
                   <Users className="w-4 h-4" />
                   참여자
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleSettings}>
                   <Settings className="w-4 h-4" />
                 </Button>
               </div>
@@ -302,11 +352,16 @@ export default function ChatRoom({
                     className="border-0 bg-transparent p-0 focus-visible:ring-0"
                   />
                   <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm" className="gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2"
+                      onClick={handleAttachFile}
+                    >
                       <Paperclip className="w-4 h-4" />
                       파일
                     </Button>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" onClick={handleAddEmoji}>
                       <Smile className="w-4 h-4" />
                     </Button>
                   </div>
@@ -425,12 +480,16 @@ export default function ChatRoom({
 
               <div className="flex gap-2">
                 <Button
-                  onClick={onOpenScheduleModal}
+                  onClick={handleCreateSchedule}
                   className="flex-1 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
                 >
                   일정 생성
                 </Button>
-                <Button variant="outline" className="gap-2">
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={handleEditSchedule}
+                >
                   <Edit className="w-4 h-4" />
                   수정
                 </Button>
@@ -518,7 +577,10 @@ export default function ChatRoom({
                 </div>
               </div>
 
-              <Button className="w-full gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+              <Button
+                className="w-full gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                onClick={handleViewFullSummary}
+              >
                 <FileText className="w-4 h-4" />
                 전체 요약 보기
               </Button>
@@ -531,6 +593,7 @@ export default function ChatRoom({
             <Button
               variant="outline"
               className="w-full justify-start gap-3 h-auto p-3"
+              onClick={handleCreateRoom}
             >
               <Calendar className="w-5 h-5 text-indigo-600" />
               <div className="text-left flex-1">
@@ -541,6 +604,7 @@ export default function ChatRoom({
             <Button
               variant="outline"
               className="w-full justify-start gap-3 h-auto p-3"
+              onClick={handleEndMeeting}
             >
               <Sparkles className="w-5 h-5 text-purple-600" />
               <div className="text-left flex-1">
