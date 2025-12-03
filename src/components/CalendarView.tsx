@@ -12,6 +12,7 @@ import {
   Users,
   MoreHorizontal,
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface CalendarViewProps {
   onBack: () => void;
@@ -24,6 +25,18 @@ export default function CalendarView({
 }: CalendarViewProps) {
   const [viewMode, setViewMode] = useState<"month" | "week">("month");
   const [currentDate, setCurrentDate] = useState(new Date(2024, 10, 28));
+
+  const handleFilter = () => {
+    toast.info("필터 옵션");
+  };
+
+  const handleEventClick = (eventTitle: string) => {
+    toast.info(`${eventTitle} 상세 보기`);
+  };
+
+  const handleEventMore = (eventTitle: string) => {
+    toast.info(`${eventTitle} 옵션`);
+  };
 
   const events = [
     {
@@ -199,7 +212,7 @@ export default function CalendarView({
             <h1 className="text-3xl text-slate-900">캘린더</h1>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" className="gap-2" onClick={handleFilter}>
               <Filter className="w-4 h-4" />
               필터
             </Button>
@@ -319,6 +332,7 @@ export default function CalendarView({
                               <div
                                 key={event.id}
                                 className={`p-2 rounded-lg bg-${event.color}-50 border border-${event.color}-200 cursor-pointer hover:shadow-sm transition-all group`}
+                                onClick={() => handleEventClick(event.title)}
                               >
                                 <div className="flex items-start justify-between gap-1">
                                   <p
@@ -335,7 +349,12 @@ export default function CalendarView({
                               </div>
                             ))}
                           {getEventsForDay(day).length > 2 && (
-                            <button className="text-xs text-indigo-600 hover:text-indigo-700 w-full text-left pl-2">
+                            <button
+                              className="text-xs text-indigo-600 hover:text-indigo-700 w-full text-left pl-2"
+                              onClick={() =>
+                                handleEventMore(getEventsForDay(day)[0].title)
+                              }
+                            >
                               +{getEventsForDay(day).length - 2}개 더보기
                             </button>
                           )}
@@ -389,7 +408,7 @@ export default function CalendarView({
                 {weekDaysList.map((day, dayIndex) => (
                   <div key={dayIndex} className="relative">
                     <div className="space-y-1">
-                      {getEventsForDay(day).map((event) => {
+                      {getEventsForDay(day).map((event, eventIndex) => {
                         const hour = parseInt(event.time.split(":")[0]);
                         const topPosition = (hour - 8) * 4;
                         return (
@@ -399,6 +418,7 @@ export default function CalendarView({
                             style={{
                               top: `${topPosition}rem`,
                             }}
+                            onClick={() => handleEventClick(event.title)}
                           >
                             <h4
                               className={`text-sm text-${event.color}-900 mb-1 line-clamp-1`}
@@ -442,6 +462,7 @@ export default function CalendarView({
               <div
                 key={event.id}
                 className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer"
+                onClick={() => handleEventClick(event.title)}
               >
                 <div
                   className={`w-12 h-12 rounded-xl bg-${event.color}-100 flex items-center justify-center flex-shrink-0`}
