@@ -562,3 +562,31 @@
 .bg-pink-500 {
   background-color: var(--pink-500);
 }
+
+.bg-orange-100 {
+  background-color: var(--orange-100);
+}
+.bg-orange-500 {
+  background-color: var(--orange-500);
+}
+
+.bg-green-100 {
+  background-color: var(--green-100);
+}
+.bg-green-500 {
+  background-color: var(--green-500);
+}
+
+.bg-red-100 {
+  background-color: var(--red-100);
+}
+.bg-red-500 {
+  background-color: var(--red-500);
+}
+
+.bg-teal-100 {
+  background-color: var(--teal-100);
+}
+.bg-teal-500 {
+  background-color: var(--teal-500);
+}
