@@ -15,6 +15,7 @@ import {
   MoreHorizontal,
   TrendingUp,
 } from "lucide-react";
+import "../styles/Dashboard.css";
 
 export default function Dashboard({
   onNavigate,
@@ -101,200 +102,195 @@ export default function Dashboard({
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
+    <div className="dashboard-container">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 glass-sidebar p-4 space-y-6 z-10">
+      <aside className="dashboard-sidebar glass-sidebar">
         {/* Organization Header */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+        <div className="sidebar-header">
+          <div className="logo-row">
+            <div className="logo-wrapper">
+              <Sparkles className="icon-md text-white" />
             </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-slate-900 truncate">TeamSync</h2>
-              <p className="text-xs text-slate-600">Premium Plan</p>
+            <div className="app-info">
+              <h2 className="app-title">TeamSync</h2>
+              <p className="app-plan">Premium Plan</p>
             </div>
-            <button className="p-1.5 hover:bg-white/50 rounded-lg transition-colors">
-              <ChevronDown className="w-4 h-4 text-slate-600" />
+            <button className="dropdown-button">
+              <ChevronDown className="icon-sm text-slate-600" />
             </button>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="space-y-1">
+        <nav className="nav-menu">
           <button
             onClick={() => onNavigate("dashboard")}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-100 text-indigo-700 transition-colors"
+            className="nav-item active"
           >
-            <Home className="w-5 h-5" />
+            <Home className="icon-md" />
             <span>대시보드</span>
           </button>
           <button
             onClick={() => onNavigate("teams")}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/50 text-slate-700 transition-colors"
+            className="nav-item inactive"
           >
-            <Users className="w-5 h-5" />
+            <Users className="icon-md" />
             <span>팀 관리</span>
           </button>
           <button
             onClick={() => onNavigate("chat")}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/50 text-slate-700 transition-colors"
+            className="nav-item inactive"
           >
-            <MessageSquare className="w-5 h-5" />
+            <MessageSquare className="icon-md" />
             <span>회의방</span>
             <Badge className="ml-auto bg-indigo-600 text-white">3</Badge>
           </button>
           <button
             onClick={() => onNavigate("calendar")}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/50 text-slate-700 transition-colors"
+            className="nav-item inactive"
           >
-            <Calendar className="w-5 h-5" />
+            <Calendar className="icon-md" />
             <span>캘린더</span>
           </button>
           <button
             onClick={() => onNavigate("summary")}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/50 text-slate-700 transition-colors"
+            className="nav-item inactive"
           >
-            <Sparkles className="w-5 h-5" />
+            <Sparkles className="icon-md" />
             <span>회의 요약</span>
           </button>
         </nav>
 
         {/* Teams Section */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between px-3">
-            <span className="text-sm text-slate-600">팀</span>
-            <button
-              className="p-1 hover:bg-white/50 rounded transition-colors"
-              onClick={onOpenCreateTeamModal}
-            >
-              <Plus className="w-4 h-4 text-slate-600" />
+        <div className="teams-section">
+          <div className="teams-header">
+            <span className="teams-label">팀</span>
+            <button className="add-team-button" onClick={onOpenCreateTeamModal}>
+              <Plus className="icon-sm text-slate-600" />
             </button>
           </div>
-          <div className="space-y-1">
+          <div className="team-list">
             {teams.map((team) => (
               <button
                 key={team.name}
                 onClick={() =>
                   onNavigateToTeam({ name: team.name, color: team.color })
                 }
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/50 text-slate-700 transition-colors group"
+                className="team-item"
               >
-                <div
-                  className={`w-2 h-2 rounded-full bg-${team.color}-500`}
-                ></div>
-                <span className="flex-1 text-left text-sm">{team.name}</span>
-                <span className="text-xs text-slate-500">{team.members}</span>
+                <div className={`team-dot bg-${team.color}-500`}></div>
+                <span className="team-name">{team.name}</span>
+                <span className="team-count">{team.members}</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* Settings */}
-        <div className="!mt-auto pt-4 border-t border-slate-200/50">
+        <div className="settings-section">
           <button
             onClick={() => onNavigate("settings")}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/50 text-slate-700 transition-colors"
+            className="nav-item inactive"
           >
-            <Settings className="w-5 h-5" />
+            <Settings className="icon-md" />
             <span>설정</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 p-8">
+      <main className="dashboard-main">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="dashboard-header">
           <div>
-            <h1 className="text-3xl text-slate-900 mb-2">대시보드</h1>
-            <p className="text-slate-600">
+            <h1 className="header-title">대시보드</h1>
+            <p className="header-desc">
               안녕하세요, 오늘도 좋은 하루 되세요! 👋
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="header-actions">
             <Button
               variant="outline"
               className="gap-2 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"
               onClick={onOpenCreateTeamModal}
             >
-              <Plus className="w-4 h-4" />팀 생성
+              <Plus className="icon-sm" />팀 생성
             </Button>
             <Button
               className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
               onClick={onOpenInviteMemberModal}
             >
-              <UserPlus className="w-4 h-4" />
+              <UserPlus className="icon-sm" />
               멤버 초대
             </Button>
           </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="stats-grid">
           <button
             onClick={() => onNavigate("calendar")}
-            className="glass-card rounded-2xl p-6 text-left hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+            className="stat-card glass-card"
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-indigo-600" />
+            <div className="stat-header">
+              <div className="stat-icon-wrapper bg-indigo-100">
+                <Calendar className="icon-md text-indigo-600" />
               </div>
-              <TrendingUp className="w-4 h-4 text-green-500" />
+              <TrendingUp className="icon-sm text-green-500" />
             </div>
-            <h3 className="text-2xl text-slate-900 mb-1">12</h3>
-            <p className="text-sm text-slate-600">예정된 회의</p>
+            <h3 className="stat-value">12</h3>
+            <p className="stat-label">예정된 회의</p>
           </button>
 
           <button
             onClick={() => onNavigate("teams")}
-            className="glass-card rounded-2xl p-6 text-left hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+            className="stat-card glass-card"
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-                <Users className="w-5 h-5 text-blue-600" />
+            <div className="stat-header">
+              <div className="stat-icon-wrapper bg-blue-100">
+                <Users className="icon-md text-blue-600" />
               </div>
-              <TrendingUp className="w-4 h-4 text-green-500" />
+              <TrendingUp className="icon-sm text-green-500" />
             </div>
-            <h3 className="text-2xl text-slate-900 mb-1">24</h3>
-            <p className="text-sm text-slate-600">팀 멤버</p>
+            <h3 className="stat-value">24</h3>
+            <p className="stat-label">팀 멤버</p>
           </button>
 
           <button
             onClick={() => onNavigate("chat")}
-            className="glass-card rounded-2xl p-6 text-left hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+            className="stat-card glass-card"
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-purple-600" />
+            <div className="stat-header">
+              <div className="stat-icon-wrapper bg-purple-100">
+                <MessageSquare className="icon-md text-purple-600" />
               </div>
               <Badge className="bg-purple-600 text-white text-xs">+5</Badge>
             </div>
-            <h3 className="text-2xl text-slate-900 mb-1">8</h3>
-            <p className="text-sm text-slate-600">활성 회의방</p>
+            <h3 className="stat-value">8</h3>
+            <p className="stat-label">활성 회의방</p>
           </button>
 
           <button
             onClick={() => onNavigate("summary")}
-            className="glass-card rounded-2xl p-6 text-left hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+            className="stat-card glass-card"
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-pink-600" />
+            <div className="stat-header">
+              <div className="stat-icon-wrapper bg-pink-100">
+                <Sparkles className="icon-md text-pink-600" />
               </div>
               <span className="text-xs text-slate-600">이번 주</span>
             </div>
-            <h3 className="text-2xl text-slate-900 mb-1">18</h3>
-            <p className="text-sm text-slate-600">AI 요약 생성</p>
+            <h3 className="stat-value">18</h3>
+            <p className="stat-label">AI 요약 생성</p>
           </button>
         </div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="content-grid">
           {/* Upcoming Events */}
-          <div className="lg:col-span-2 glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl text-slate-900">다가오는 일정</h2>
+          <div className="col-span-2 section-card glass-card">
+            <div className="section-header">
+              <h2 className="section-title">다가오는 일정</h2>
               <Button
                 onClick={() => onNavigate("calendar")}
                 variant="ghost"
@@ -304,30 +300,25 @@ export default function Dashboard({
                 전체 보기 →
               </Button>
             </div>
-            <div className="space-y-4">
+            <div className="event-list">
               {upcomingEvents.map((event) => (
-                <div
-                  key={event.id}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer"
-                >
-                  <div
-                    className={`w-12 h-12 rounded-xl bg-${event.color}-100 flex items-center justify-center`}
-                  >
+                <div key={event.id} className="event-item">
+                  <div className={`event-icon-wrapper bg-${event.color}-100`}>
                     <Calendar className={`w-6 h-6 text-${event.color}-600`} />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-slate-900 mb-1">{event.title}</h3>
-                    <div className="flex items-center gap-3 text-sm text-slate-600">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
+                  <div className="event-info">
+                    <h3 className="event-title">{event.title}</h3>
+                    <div className="event-meta">
+                      <span className="event-time">
+                        <Clock className="icon-sm" />
                         {event.time}
                       </span>
                       <span>•</span>
                       <span>{event.team}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex -space-x-2">
+                  <div className="attendees-preview">
+                    <div className="avatar-stack">
                       {[...Array(Math.min(event.attendees, 3))].map((_, i) => (
                         <Avatar
                           key={i}
@@ -351,31 +342,28 @@ export default function Dashboard({
           </div>
 
           {/* Team Members */}
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl text-slate-900">팀 멤버</h2>
+          <div className="section-card glass-card">
+            <div className="section-header">
+              <h2 className="section-title">팀 멤버</h2>
               <Button
                 variant="ghost"
                 size="sm"
                 className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
               >
-                <UserPlus className="w-4 h-4" />
+                <UserPlus className="icon-sm" />
               </Button>
             </div>
-            <div className="space-y-3">
+            <div className="member-list">
               {teamMembers.map((member) => (
-                <div
-                  key={member.id}
-                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/50 transition-colors cursor-pointer"
-                >
-                  <div className="relative">
+                <div key={member.id} className="member-item">
+                  <div className="member-avatar-wrapper">
                     <Avatar className="w-10 h-10">
                       <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-blue-500 text-white">
                         {member.avatar}
                       </AvatarFallback>
                     </Avatar>
                     <div
-                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
+                      className={`status-indicator ${
                         member.status === "online"
                           ? "bg-green-500"
                           : member.status === "away"
@@ -384,14 +372,12 @@ export default function Dashboard({
                       }`}
                     ></div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-slate-900 truncate">
-                      {member.name}
-                    </p>
-                    <p className="text-xs text-slate-600">{member.role}</p>
+                  <div className="member-info">
+                    <p className="member-name">{member.name}</p>
+                    <p className="member-role">{member.role}</p>
                   </div>
-                  <button className="p-1 hover:bg-white rounded transition-colors">
-                    <MoreHorizontal className="w-4 h-4 text-slate-400" />
+                  <button className="more-button">
+                    <MoreHorizontal className="icon-sm text-slate-400" />
                   </button>
                 </div>
               ))}
@@ -399,9 +385,9 @@ export default function Dashboard({
           </div>
 
           {/* Active Rooms */}
-          <div className="lg:col-span-2 glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl text-slate-900">활성 회의방</h2>
+          <div className="col-span-2 section-card glass-card">
+            <div className="section-header">
+              <h2 className="section-title">활성 회의방</h2>
               <Button
                 onClick={() => onNavigate("chat")}
                 variant="ghost"
@@ -411,19 +397,19 @@ export default function Dashboard({
                 전체 보기 →
               </Button>
             </div>
-            <div className="space-y-3">
+            <div className="room-list">
               {activeRooms.map((room) => (
                 <div
                   key={room.id}
                   onClick={() => onNavigate("chat")}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer"
+                  className="room-item"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center">
+                  <div className="room-icon-wrapper">
                     <MessageSquare className="w-6 h-6 text-white" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-slate-900 mb-1">{room.name}</h3>
-                    <p className="text-sm text-slate-600">
+                  <div className="room-info">
+                    <h3 className="room-name">{room.name}</h3>
+                    <p className="room-meta">
                       {room.members}명 참여 중 • {room.team}
                     </p>
                   </div>
@@ -438,25 +424,23 @@ export default function Dashboard({
           </div>
 
           {/* Recent Activity */}
-          <div className="glass-card rounded-2xl p-6">
-            <h2 className="text-xl text-slate-900 mb-6">최근 활동</h2>
-            <div className="space-y-4">
+          <div className="section-card glass-card">
+            <h2 className="section-title mb-6">최근 활동</h2>
+            <div className="activity-list">
               {recentActivities.map((activity) => (
-                <div key={activity.id} className="flex gap-3">
+                <div key={activity.id} className="activity-item">
                   <Avatar className="w-8 h-8 flex-shrink-0">
                     <AvatarFallback className="bg-slate-100 text-slate-700 text-xs">
                       {activity.user.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-slate-900 mb-0.5">
+                  <div className="activity-content">
+                    <p className="activity-text">
                       <span>{activity.user}</span>{" "}
-                      <span className="text-slate-600">{activity.action}</span>
+                      <span className="activity-action">{activity.action}</span>
                     </p>
-                    <p className="text-sm text-indigo-600 mb-1">
-                      {activity.target}
-                    </p>
-                    <p className="text-xs text-slate-500">{activity.time}</p>
+                    <p className="activity-target">{activity.target}</p>
+                    <p className="activity-time">{activity.time}</p>
                   </div>
                 </div>
               ))}

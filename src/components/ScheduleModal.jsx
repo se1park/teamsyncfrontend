@@ -21,6 +21,7 @@ import {
   Plus,
   X,
 } from "lucide-react";
+import "../styles/ScheduleModal.css";
 
 export default function ScheduleModal({ isOpen, onClose, onSave }) {
   const [title, setTitle] = useState("최종 프로젝트 리뷰 회의");
@@ -70,30 +71,25 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0 bg-gradient-to-br from-white to-indigo-50/30">
-        <DialogHeader className="p-6 pb-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-t-lg">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+      <DialogContent className="schedule-modal-content">
+        <DialogHeader className="schedule-modal-header">
+          <div className="header-content">
+            <div className="header-icon-box">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <DialogTitle className="text-xl text-white">
-                AI 일정 생성
-              </DialogTitle>
-              <DialogDescription className="text-indigo-100">
+              <DialogTitle className="header-title">AI 일정 생성</DialogTitle>
+              <DialogDescription className="header-description">
                 채팅에서 감지된 정보로 자동 생성되었습니다
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
-        <div className="p-6 space-y-6">
+        <div className="schedule-form-container">
           {/* Title */}
-          <div className="space-y-2">
-            <Label
-              htmlFor="title"
-              className="flex items-center gap-2 text-slate-700"
-            >
+          <div className="form-section">
+            <Label htmlFor="title" className="form-label">
               <CalendarIcon className="w-4 h-4 text-indigo-600" />
               일정 제목
             </Label>
@@ -101,34 +97,31 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+              className="form-input"
               placeholder="회의 제목을 입력하세요"
             />
           </div>
 
           {/* Date & Time */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2 text-slate-700">
+          <div className="date-time-grid">
+            <div className="form-section">
+              <Label className="form-label">
                 <CalendarIcon className="w-4 h-4 text-blue-600" />
                 날짜
               </Label>
-              <div className="glass-card rounded-xl p-4">
+              <div className="calendar-wrapper">
                 <Calendar
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  className="rounded-md"
+                  className="calendar-component"
                 />
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label
-                  htmlFor="time"
-                  className="flex items-center gap-2 text-slate-700"
-                >
+            <div className="time-location-group">
+              <div className="form-section">
+                <Label htmlFor="time" className="form-label">
                   <Clock className="w-4 h-4 text-purple-600" />
                   시간
                 </Label>
@@ -137,15 +130,12 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="form-input"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label
-                  htmlFor="location"
-                  className="flex items-center gap-2 text-slate-700"
-                >
+              <div className="form-section">
+                <Label htmlFor="location" className="form-label">
                   <MapPin className="w-4 h-4 text-pink-600" />
                   장소
                 </Label>
@@ -153,7 +143,7 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
                   id="location"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="form-input"
                   placeholder="회의 장소를 입력하세요"
                 />
               </div>
@@ -161,30 +151,30 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
           </div>
 
           {/* Attendees */}
-          <div className="space-y-3">
-            <Label className="flex items-center gap-2 text-slate-700">
+          <div className="form-section">
+            <Label className="form-label">
               <Users className="w-4 h-4 text-green-600" />
               참석자
             </Label>
-            <div className="glass-card rounded-xl p-4 space-y-3">
-              <div className="flex flex-wrap gap-2">
+            <div className="attendees-wrapper">
+              <div className="attendees-list">
                 {attendees.map((attendee, index) => (
                   <Badge
                     key={index}
                     variant="outline"
-                    className="bg-indigo-50 text-indigo-700 border-indigo-200 pl-3 pr-1 py-1.5 gap-2"
+                    className="attendee-badge"
                   >
                     {attendee}
                     <button
                       onClick={() => handleRemoveAttendee(index)}
-                      className="p-0.5 hover:bg-indigo-200 rounded transition-colors"
+                      className="remove-attendee-btn"
                     >
                       <X className="w-3 h-3" />
                     </button>
                   </Badge>
                 ))}
               </div>
-              <div className="flex gap-2">
+              <div className="add-item-row">
                 <Input
                   value={newAttendee}
                   onChange={(e) => setNewAttendee(e.target.value)}
@@ -195,12 +185,12 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
                     }
                   }}
                   placeholder="참석자 이름 입력"
-                  className="flex-1 bg-white border-slate-200"
+                  className="add-input"
                 />
                 <Button
                   onClick={handleAddAttendee}
                   variant="outline"
-                  className="gap-2"
+                  className="add-button"
                 >
                   <Plus className="w-4 h-4" />
                   추가
@@ -210,31 +200,26 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
           </div>
 
           {/* Tasks */}
-          <div className="space-y-3">
-            <Label className="flex items-center gap-2 text-slate-700">
+          <div className="form-section">
+            <Label className="form-label">
               <CheckCircle2 className="w-4 h-4 text-indigo-600" />할 일 목록
             </Label>
-            <div className="glass-card rounded-xl p-4 space-y-3">
-              <div className="space-y-2">
+            <div className="tasks-wrapper">
+              <div className="tasks-list">
                 {tasks.map((task, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-white border border-slate-100 group hover:border-indigo-200 transition-colors"
-                  >
-                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></div>
-                    <span className="flex-1 text-sm text-slate-900">
-                      {task}
-                    </span>
+                  <div key={index} className="task-item group">
+                    <div className="task-dot"></div>
+                    <span className="task-text">{task}</span>
                     <button
                       onClick={() => handleRemoveTask(index)}
-                      className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-50 rounded transition-all"
+                      className="remove-task-btn"
                     >
                       <X className="w-4 h-4 text-red-500" />
                     </button>
                   </div>
                 ))}
               </div>
-              <div className="flex gap-2">
+              <div className="add-item-row">
                 <Input
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
@@ -245,12 +230,12 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
                     }
                   }}
                   placeholder="새 할 일 입력"
-                  className="flex-1 bg-white border-slate-200"
+                  className="add-input"
                 />
                 <Button
                   onClick={handleAddTask}
                   variant="outline"
-                  className="gap-2"
+                  className="add-button"
                 >
                   <Plus className="w-4 h-4" />
                   추가
@@ -260,16 +245,14 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
           </div>
 
           {/* AI Note */}
-          <div className="p-4 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0">
+          <div className="ai-note-card">
+            <div className="ai-note-content">
+              <div className="ai-icon-box">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <div className="flex-1">
-                <h4 className="text-sm text-purple-900 mb-1">
-                  AI가 자동으로 감지했습니다
-                </h4>
-                <p className="text-sm text-purple-700">
+              <div className="ai-note-text-group">
+                <h4 className="ai-note-title">AI가 자동으로 감지했습니다</h4>
+                <p className="ai-note-description">
                   채팅 내용을 분석하여 일정 정보를 추출했습니다. 필요한 경우
                   수정하고 저장하세요.
                 </p>
@@ -279,15 +262,16 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
         </div>
 
         {/* Footer */}
-        <div className="p-6 pt-4 border-t border-slate-200 bg-white rounded-b-lg">
-          <div className="flex gap-3">
-            <Button onClick={onClose} variant="outline" className="flex-1 h-12">
+        <div className="schedule-modal-footer">
+          <div className="footer-buttons">
+            <Button
+              onClick={onClose}
+              variant="outline"
+              className="cancel-button"
+            >
               취소
             </Button>
-            <Button
-              onClick={handleSave}
-              className="flex-1 h-12 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
-            >
+            <Button onClick={handleSave} className="save-button">
               캘린더에 저장
             </Button>
           </div>

@@ -19,6 +19,7 @@ import {
 } from "./ui/select";
 import { Mail, UserPlus, Copy, Check, X } from "lucide-react";
 import { toast } from "sonner";
+import "../styles/InviteMemberModal.css";
 
 export default function InviteMemberModal({ isOpen, onClose }) {
   const [email, setEmail] = useState("");
@@ -62,65 +63,62 @@ export default function InviteMemberModal({ isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
-        <DialogHeader className="p-6 pb-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-t-lg">
-          <DialogTitle className="text-xl text-white flex items-center gap-2">
-            <UserPlus className="w-5 h-5" />
+      <DialogContent className="invite-member-modal-content">
+        <DialogHeader className="invite-member-header">
+          <DialogTitle className="invite-member-title">
+            <UserPlus className="icon-md" />
             멤버 초대
           </DialogTitle>
-          <DialogDescription className="text-indigo-100">
+          <DialogDescription className="invite-member-desc">
             팀에 새로운 멤버를 초대하세요
           </DialogDescription>
         </DialogHeader>
 
-        <div className="p-6 space-y-6">
+        <div className="invite-member-body">
           {/* Invite Link */}
-          <div className="glass-card rounded-xl p-4 space-y-3">
-            <Label className="text-slate-700">초대 링크로 공유</Label>
-            <div className="flex gap-2">
+          <div className="invite-link-card glass-card">
+            <Label className="form-label">초대 링크로 공유</Label>
+            <div className="invite-input-row">
               <Input
                 value={inviteLink}
                 readOnly
-                className="flex-1 bg-white border-slate-200 font-mono text-sm"
+                className="invite-link-input"
               />
               <Button
                 onClick={handleCopyLink}
                 variant="outline"
-                className="gap-2 min-w-[100px]"
+                className="copy-button"
               >
                 {copied ? (
                   <>
-                    <Check className="w-4 h-4" />
+                    <Check className="icon-sm" />
                     복사됨
                   </>
                 ) : (
                   <>
-                    <Copy className="w-4 h-4" />
+                    <Copy className="icon-sm" />
                     복사
                   </>
                 )}
               </Button>
             </div>
-            <p className="text-xs text-slate-600">
+            <p className="helper-text">
               이 링크를 통해 누구나 조직에 참여할 수 있습니다
             </p>
           </div>
 
           {/* Email Invite */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="h-px flex-1 bg-slate-200"></div>
-              <span className="text-sm text-slate-600">또는 이메일로 초대</span>
-              <div className="h-px flex-1 bg-slate-200"></div>
+          <div className="email-invite-section">
+            <div className="divider-row">
+              <div className="divider-line"></div>
+              <span className="divider-text">또는 이메일로 초대</span>
+              <div className="divider-line"></div>
             </div>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label
-                  htmlFor="email"
-                  className="flex items-center gap-2 text-slate-700"
-                >
-                  <Mail className="w-4 h-4 text-indigo-600" />
+            <div className="email-invite-section">
+              <div className="form-group">
+                <Label htmlFor="email" className="form-label-icon">
+                  <Mail className="icon-sm text-indigo-600" />
                   이메일 주소
                 </Label>
                 <Input
@@ -128,18 +126,18 @@ export default function InviteMemberModal({ isOpen, onClose }) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="form-input"
                   placeholder="example@email.com"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="role" className="text-slate-700">
+              <div className="form-grid-2">
+                <div className="form-group">
+                  <Label htmlFor="role" className="form-label">
                     역할
                   </Label>
                   <Select value={role} onValueChange={setRole}>
-                    <SelectTrigger className="h-12 bg-white border-slate-200">
+                    <SelectTrigger className="form-input">
                       <SelectValue placeholder="역할 선택" />
                     </SelectTrigger>
                     <SelectContent>
@@ -151,12 +149,12 @@ export default function InviteMemberModal({ isOpen, onClose }) {
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="team" className="text-slate-700">
+                <div className="form-group">
+                  <Label htmlFor="team" className="form-label">
                     팀
                   </Label>
                   <Select value={team} onValueChange={setTeam}>
-                    <SelectTrigger className="h-12 bg-white border-slate-200">
+                    <SelectTrigger className="form-input">
                       <SelectValue placeholder="팀 선택" />
                     </SelectTrigger>
                     <SelectContent>
@@ -172,10 +170,10 @@ export default function InviteMemberModal({ isOpen, onClose }) {
               <Button
                 onClick={handleAddMember}
                 variant="outline"
-                className="w-full h-12 gap-2"
+                className="add-button"
                 disabled={!email || !role || !team}
               >
-                <UserPlus className="w-4 h-4" />
+                <UserPlus className="icon-sm" />
                 초대 목록에 추가
               </Button>
             </div>
@@ -183,25 +181,17 @@ export default function InviteMemberModal({ isOpen, onClose }) {
 
           {/* Invited Members List */}
           {invitedMembers.length > 0 && (
-            <div className="space-y-3">
-              <Label className="text-slate-700">
+            <div className="invited-list-section">
+              <Label className="form-label">
                 초대할 멤버 ({invitedMembers.length}명)
               </Label>
-              <div className="glass-card rounded-xl p-4 space-y-2 max-h-[200px] overflow-y-auto">
+              <div className="invited-list glass-card">
                 {invitedMembers.map((member, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-100"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-slate-900 truncate">
-                        {member.email}
-                      </p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge
-                          variant="outline"
-                          className="bg-indigo-50 text-indigo-700 border-indigo-200 text-xs"
-                        >
+                  <div key={index} className="invited-item">
+                    <div className="invited-info">
+                      <p className="invited-email">{member.email}</p>
+                      <div className="badge-row">
+                        <Badge variant="outline" className="role-badge">
                           {member.role === "owner"
                             ? "Owner"
                             : member.role === "admin"
@@ -210,19 +200,16 @@ export default function InviteMemberModal({ isOpen, onClose }) {
                             ? "Member"
                             : "Guest"}
                         </Badge>
-                        <Badge
-                          variant="outline"
-                          className="bg-blue-50 text-blue-700 border-blue-200 text-xs"
-                        >
+                        <Badge variant="outline" className="team-badge">
                           {member.team}
                         </Badge>
                       </div>
                     </div>
                     <button
                       onClick={() => handleRemoveMember(index)}
-                      className="p-2 hover:bg-red-50 rounded-lg transition-colors ml-2"
+                      className="remove-button"
                     >
-                      <X className="w-4 h-4 text-red-600" />
+                      <X className="icon-sm text-red-600" />
                     </button>
                   </div>
                 ))}
@@ -231,41 +218,29 @@ export default function InviteMemberModal({ isOpen, onClose }) {
           )}
 
           {/* Role Descriptions */}
-          <div className="glass-card rounded-xl p-4 space-y-2">
-            <h3 className="text-sm text-slate-900 mb-2">역할 설명</h3>
-            <div className="space-y-2 text-xs text-slate-600">
-              <div className="flex gap-2">
-                <Badge
-                  variant="outline"
-                  className="bg-purple-50 text-purple-700 border-purple-200"
-                >
+          <div className="role-desc-card glass-card">
+            <h3 className="role-desc-title">역할 설명</h3>
+            <div className="role-desc-list">
+              <div className="role-desc-item">
+                <Badge variant="outline" className="role-badge-owner">
                   Owner
                 </Badge>
                 <span>모든 권한 보유, 조직 삭제 가능</span>
               </div>
-              <div className="flex gap-2">
-                <Badge
-                  variant="outline"
-                  className="bg-blue-50 text-blue-700 border-blue-200"
-                >
+              <div className="role-desc-item">
+                <Badge variant="outline" className="role-badge-admin">
                   Admin
                 </Badge>
                 <span>멤버 관리, 팀 생성/삭제 가능</span>
               </div>
-              <div className="flex gap-2">
-                <Badge
-                  variant="outline"
-                  className="bg-green-50 text-green-700 border-green-200"
-                >
+              <div className="role-desc-item">
+                <Badge variant="outline" className="role-badge-member">
                   Member
                 </Badge>
                 <span>일반 멤버, 회의 참여 및 콘텐츠 작성</span>
               </div>
-              <div className="flex gap-2">
-                <Badge
-                  variant="outline"
-                  className="bg-slate-50 text-slate-700 border-slate-200"
-                >
+              <div className="role-desc-item">
+                <Badge variant="outline" className="role-badge-guest">
                   Guest
                 </Badge>
                 <span>제한된 권한, 특정 회의방만 접근</span>
@@ -275,17 +250,21 @@ export default function InviteMemberModal({ isOpen, onClose }) {
         </div>
 
         {/* Footer */}
-        <div className="p-6 pt-4 border-t border-slate-200 bg-white rounded-b-lg">
-          <div className="flex gap-3">
-            <Button onClick={onClose} variant="outline" className="flex-1 h-12">
+        <div className="invite-member-footer">
+          <div className="footer-buttons">
+            <Button
+              onClick={onClose}
+              variant="outline"
+              className="footer-button"
+            >
               취소
             </Button>
             <Button
               onClick={handleSendInvites}
-              className="flex-1 h-12 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
+              className="footer-button submit-button"
               disabled={invitedMembers.length === 0}
             >
-              <Mail className="w-4 h-4 mr-2" />
+              <Mail className="icon-sm mr-2" />
               {invitedMembers.length > 0
                 ? `${invitedMembers.length}명에게 초대 발송`
                 : "초대 발송"}

@@ -13,6 +13,7 @@ import {
 } from "./ui/dialog";
 import { Users, Plus, X, Palette } from "lucide-react";
 import { toast } from "sonner";
+import "../styles/CreateTeamModal.css";
 
 const colorOptions = [
   { name: "Indigo", value: "indigo", bg: "bg-indigo-500" },
@@ -68,65 +69,63 @@ export default function CreateTeamModal({ isOpen, onClose, onSave }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
-        <DialogHeader className="p-6 pb-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-t-lg">
-          <DialogTitle className="text-xl text-white flex items-center gap-2">
-            <Users className="w-5 h-5" />새 팀 만들기
+      <DialogContent className="create-team-modal-content">
+        <DialogHeader className="create-team-header">
+          <DialogTitle className="create-team-title">
+            <Users className="icon-md" />새 팀 만들기
           </DialogTitle>
-          <DialogDescription className="text-indigo-100">
+          <DialogDescription className="create-team-desc">
             새로운 팀을 만들고 멤버를 추가하세요
           </DialogDescription>
         </DialogHeader>
 
-        <div className="p-6 space-y-6">
+        <div className="create-team-body">
           {/* Team Name */}
-          <div className="space-y-2">
-            <Label htmlFor="teamName" className="text-slate-700">
+          <div className="form-group">
+            <Label htmlFor="teamName" className="form-label">
               팀 이름 *
             </Label>
             <Input
               id="teamName"
               value={teamName}
               onChange={(e) => setTeamName(e.target.value)}
-              className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+              className="form-input"
               placeholder="예: 개발팀, 디자인팀"
               required
             />
           </div>
 
           {/* Description */}
-          <div className="space-y-2">
-            <Label htmlFor="description" className="text-slate-700">
+          <div className="form-group">
+            <Label htmlFor="description" className="form-label">
               팀 설명 (선택사항)
             </Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="min-h-[100px] bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+              className="form-textarea"
               placeholder="팀의 목적과 역할을 설명해주세요"
             />
           </div>
 
           {/* Color Selection */}
           <div className="space-y-3">
-            <Label className="flex items-center gap-2 text-slate-700">
-              <Palette className="w-4 h-4 text-indigo-600" />팀 색상
+            <Label className="form-label-icon">
+              <Palette className="icon-sm icon-indigo" />팀 색상
             </Label>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="color-grid">
               {colorOptions.map((color) => (
                 <button
                   key={color.value}
                   onClick={() => setSelectedColor(color.value)}
-                  className={`p-4 rounded-xl border-2 transition-all hover:scale-105 ${
-                    selectedColor === color.value
-                      ? "border-indigo-500 bg-indigo-50"
-                      : "border-slate-200 bg-white hover:border-slate-300"
+                  className={`color-button ${
+                    selectedColor === color.value ? "selected" : "unselected"
                   }`}
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <div className={`w-8 h-8 rounded-full ${color.bg}`}></div>
-                    <span className="text-xs text-slate-700">{color.name}</span>
+                    <div className={`color-dot ${color.bg}`}></div>
+                    <span className="color-name">{color.name}</span>
                   </div>
                 </button>
               ))}
@@ -135,28 +134,28 @@ export default function CreateTeamModal({ isOpen, onClose, onSave }) {
 
           {/* Add Members */}
           <div className="space-y-3">
-            <Label className="text-slate-700">팀 멤버 추가 (선택사항)</Label>
-            <div className="glass-card rounded-xl p-4 space-y-3">
+            <Label className="form-label">팀 멤버 추가 (선택사항)</Label>
+            <div className="members-container glass-card">
               {members.length > 0 && (
-                <div className="flex flex-wrap gap-2 pb-3 border-b border-slate-200">
+                <div className="members-list">
                   {members.map((member, index) => (
                     <Badge
                       key={index}
                       variant="outline"
-                      className="bg-indigo-50 text-indigo-700 border-indigo-200 pl-3 pr-1 py-1.5 gap-2"
+                      className="member-badge"
                     >
                       {member}
                       <button
                         onClick={() => handleRemoveMember(index)}
-                        className="p-0.5 hover:bg-indigo-200 rounded transition-colors"
+                        className="remove-member-button"
                       >
-                        <X className="w-3 h-3" />
+                        <X className="icon-xs" />
                       </button>
                     </Badge>
                   ))}
                 </div>
               )}
-              <div className="flex gap-2">
+              <div className="add-member-row">
                 <Input
                   value={newMember}
                   onChange={(e) => setNewMember(e.target.value)}
@@ -167,64 +166,58 @@ export default function CreateTeamModal({ isOpen, onClose, onSave }) {
                     }
                   }}
                   placeholder="멤버 이름 또는 이메일 입력"
-                  className="flex-1 bg-white border-slate-200"
+                  className="add-member-input"
                 />
                 <Button
                   onClick={handleAddMember}
                   type="button"
                   variant="outline"
-                  className="gap-2"
+                  className="add-member-button"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="icon-sm" />
                   추가
                 </Button>
               </div>
-              <p className="text-xs text-slate-600">
+              <p className="helper-text">
                 나중에 팀 설정에서 멤버를 추가할 수도 있습니다
               </p>
             </div>
           </div>
 
           {/* Preview */}
-          <div className="glass-card rounded-xl p-4">
-            <Label className="text-slate-700 mb-3 block">미리보기</Label>
-            <div className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100">
-              <div
-                className={`w-12 h-12 rounded-xl bg-${selectedColor}-100 flex items-center justify-center`}
-              >
-                <div
-                  className={`w-3 h-3 rounded-full bg-${selectedColor}-500`}
-                ></div>
+          <div className="preview-card glass-card">
+            <Label className="form-label mb-3 block">미리보기</Label>
+            <div className="preview-content">
+              <div className={`preview-icon-wrapper bg-${selectedColor}-100`}>
+                <div className={`preview-dot bg-${selectedColor}-500`}></div>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-slate-900 mb-1">{teamName || "팀 이름"}</h3>
-                <p className="text-sm text-slate-600 line-clamp-1">
-                  {description || "팀 설명"}
-                </p>
+              <div className="preview-info">
+                <h3 className="preview-title">{teamName || "팀 이름"}</h3>
+                <p className="preview-desc">{description || "팀 설명"}</p>
               </div>
-              <div className="text-sm text-slate-600">{members.length}명</div>
+              <div className="preview-count">{members.length}명</div>
             </div>
           </div>
 
           {/* Team Templates */}
           <div className="space-y-3">
-            <Label className="text-slate-700">빠른 시작 템플릿</Label>
-            <div className="grid grid-cols-2 gap-3">
+            <Label className="form-label">빠른 시작 템플릿</Label>
+            <div className="template-grid">
               <button
                 onClick={() => {
                   setTeamName("개발팀");
                   setDescription("프론트엔드 & 백엔드 개발");
                   setSelectedColor("indigo");
                 }}
-                className="p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50 transition-all text-left"
+                className="template-button"
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
+                <div className="template-header">
+                  <div className="template-icon-wrapper bg-indigo-100">
+                    <div className="template-dot bg-indigo-500"></div>
                   </div>
-                  <h4 className="text-sm text-slate-900">개발팀</h4>
+                  <h4 className="template-title">개발팀</h4>
                 </div>
-                <p className="text-xs text-slate-600">개발자를 위한 기본 팀</p>
+                <p className="helper-text">개발자를 위한 기본 팀</p>
               </button>
 
               <button
@@ -233,17 +226,15 @@ export default function CreateTeamModal({ isOpen, onClose, onSave }) {
                   setDescription("UI/UX 디자인 및 브랜딩");
                   setSelectedColor("blue");
                 }}
-                className="p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50 transition-all text-left"
+                className="template-button"
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                <div className="template-header">
+                  <div className="template-icon-wrapper bg-blue-100">
+                    <div className="template-dot bg-blue-500"></div>
                   </div>
-                  <h4 className="text-sm text-slate-900">디자인팀</h4>
+                  <h4 className="template-title">디자인팀</h4>
                 </div>
-                <p className="text-xs text-slate-600">
-                  디자이너를 위한 기본 팀
-                </p>
+                <p className="helper-text">디자이너를 위한 기본 팀</p>
               </button>
 
               <button
@@ -252,15 +243,15 @@ export default function CreateTeamModal({ isOpen, onClose, onSave }) {
                   setDescription("마케팅 & 콘텐츠 제작");
                   setSelectedColor("purple");
                 }}
-                className="p-4 rounded-xl border border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50 transition-all text-left"
+                className="template-button"
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                <div className="template-header">
+                  <div className="template-icon-wrapper bg-purple-100">
+                    <div className="template-dot bg-purple-500"></div>
                   </div>
-                  <h4 className="text-sm text-slate-900">마케팅팀</h4>
+                  <h4 className="template-title">마케팅팀</h4>
                 </div>
-                <p className="text-xs text-slate-600">마케터를 위한 기본 팀</p>
+                <p className="helper-text">마케터를 위한 기본 팀</p>
               </button>
 
               <button
@@ -269,32 +260,36 @@ export default function CreateTeamModal({ isOpen, onClose, onSave }) {
                   setDescription("운영 및 지원");
                   setSelectedColor("green");
                 }}
-                className="p-4 rounded-xl border border-slate-200 bg-white hover:border-green-300 hover:bg-green-50 transition-all text-left"
+                className="template-button"
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <div className="template-header">
+                  <div className="template-icon-wrapper bg-green-100">
+                    <div className="template-dot bg-green-500"></div>
                   </div>
-                  <h4 className="text-sm text-slate-900">운영팀</h4>
+                  <h4 className="template-title">운영팀</h4>
                 </div>
-                <p className="text-xs text-slate-600">운영자를 위한 기본 팀</p>
+                <p className="helper-text">운영자를 위한 기본 팀</p>
               </button>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="p-6 pt-4 border-t border-slate-200 bg-white rounded-b-lg">
-          <div className="flex gap-3">
-            <Button onClick={onClose} variant="outline" className="flex-1 h-12">
+        <div className="create-team-footer">
+          <div className="footer-buttons">
+            <Button
+              onClick={onClose}
+              variant="outline"
+              className="footer-button"
+            >
               취소
             </Button>
             <Button
               onClick={handleCreateTeam}
-              className="flex-1 h-12 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
+              className="footer-button submit-button"
               disabled={!teamName.trim()}
             >
-              <Users className="w-4 h-4 mr-2" />팀 생성
+              <Users className="icon-sm mr-2" />팀 생성
             </Button>
           </div>
         </div>

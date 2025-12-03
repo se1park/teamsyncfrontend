@@ -1,0 +1,565 @@
+.team-detail-container {
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom right,
+    var(--indigo-50),
+    var(--white),
+    var(--blue-50)
+  );
+}
+
+.team-detail-content {
+  padding: var(--spacing-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* Header */
+.team-header-back-btn {
+  font-size: var(--font-size-sm);
+  color: var(--slate-600);
+  transition: color 0.2s;
+  margin-bottom: var(--spacing-3);
+  text-align: left;
+}
+
+.team-header-back-btn:hover {
+  color: var(--indigo-600);
+}
+
+.team-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.team-info-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.team-icon-box {
+  width: 4rem; /* 16 * 0.25rem */
+  height: 4rem;
+  border-radius: var(--radius-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--theme-100);
+}
+
+.team-icon-dot {
+  width: 1.5rem; /* 6 * 0.25rem */
+  height: 1.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--theme-500);
+}
+
+.team-title {
+  font-size: var(--font-size-3xl);
+  color: var(--slate-900);
+  margin: 0;
+}
+
+.team-description {
+  color: var(--slate-600);
+  margin: 0;
+}
+
+.team-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.invite-btn {
+  background: linear-gradient(to right, var(--indigo-600), var(--blue-600));
+  color: var(--white);
+  box-shadow: var(--shadow-lg);
+}
+
+.invite-btn:hover {
+  background: linear-gradient(to right, var(--indigo-700), var(--blue-700));
+}
+
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stats-card {
+  padding: var(--spacing-6);
+  border-radius: var(--radius-2xl);
+}
+
+.stats-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-3);
+}
+
+.stats-icon-box {
+  width: 2.5rem; /* 10 * 0.25rem */
+  height: 2.5rem;
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-icon-box.theme {
+  background-color: var(--theme-100);
+  color: var(--theme-600);
+}
+
+.stats-icon-box.blue {
+  background-color: var(--blue-100);
+  color: var(--blue-600);
+}
+
+.stats-icon-box.purple {
+  background-color: var(--purple-100);
+  color: var(--purple-600);
+}
+
+.stats-icon-box.pink {
+  background-color: var(--pink-100);
+  color: var(--pink-600);
+}
+
+.stats-value {
+  font-size: var(--font-size-2xl);
+  color: var(--slate-900);
+  margin-bottom: 0.25rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.stats-label {
+  font-size: var(--font-size-sm);
+  color: var(--slate-600);
+  margin: 0;
+}
+
+/* Tabs */
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.tabs-list {
+  padding: var(--spacing-1);
+}
+
+.tab-trigger {
+  gap: var(--spacing-2);
+}
+
+/* Overview Tab */
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 1024px) {
+  .overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.section-card {
+  padding: var(--spacing-6);
+  border-radius: var(--radius-2xl);
+}
+
+.section-title {
+  font-size: var(--font-size-xl);
+  color: var(--slate-900);
+  margin-bottom: var(--spacing-4);
+  font-weight: var(--font-weight-semibold);
+}
+
+.projects-list,
+.meetings-list,
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.project-item {
+  padding: var(--spacing-4);
+  border-radius: var(--radius-xl);
+  background-color: var(--white);
+  border: 1px solid var(--slate-100);
+  transition: all 0.2s;
+}
+
+.project-item:hover {
+  border-color: var(--indigo-200);
+  box-shadow: var(--shadow-md);
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-2);
+}
+
+.project-name {
+  color: var(--slate-900);
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+}
+
+.project-progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-2);
+}
+
+.progress-bar-bg {
+  width: 100%;
+  background-color: var(--slate-100);
+  border-radius: var(--radius-full);
+  height: 0.5rem;
+}
+
+.progress-bar-fill {
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(to right, var(--theme-500), var(--theme-600));
+  transition: width 0.3s ease;
+}
+
+.meeting-item {
+  padding: var(--spacing-4);
+  border-radius: var(--radius-xl);
+  background-color: var(--white);
+  border: 1px solid var(--slate-100);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.meeting-item:hover {
+  border-color: var(--indigo-200);
+  box-shadow: var(--shadow-md);
+}
+
+.meeting-title {
+  color: var(--slate-900);
+  margin-bottom: var(--spacing-2);
+  font-weight: var(--font-weight-medium);
+}
+
+.meeting-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--font-size-sm);
+  color: var(--slate-600);
+}
+
+.activity-item {
+  display: flex;
+  gap: var(--spacing-3);
+}
+
+.activity-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+}
+
+.activity-avatar-fallback {
+  background: linear-gradient(
+    to bottom right,
+    var(--theme-500),
+    var(--theme-600)
+  );
+  color: var(--white);
+}
+
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-text {
+  font-size: var(--font-size-sm);
+  color: var(--slate-900);
+  margin-bottom: 0.125rem;
+}
+
+.activity-target {
+  font-size: var(--font-size-sm);
+  color: var(--indigo-600);
+  margin-bottom: 0.25rem;
+}
+
+.activity-time {
+  font-size: var(--font-size-xs);
+  color: var(--slate-500);
+}
+
+/* Members Tab */
+.members-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-6);
+}
+
+.members-search-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: var(--slate-400);
+}
+
+.search-input {
+  padding-left: 2.5rem;
+  width: 16rem;
+  background-color: var(--white);
+  border-color: var(--slate-200);
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
+}
+
+@media (min-width: 768px) {
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.member-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  border-radius: var(--radius-xl);
+  background-color: var(--white);
+  border: 1px solid var(--slate-100);
+  transition: all 0.2s;
+}
+
+.member-card:hover {
+  border-color: var(--indigo-200);
+  box-shadow: var(--shadow-md);
+}
+
+.member-avatar-wrapper {
+  position: relative;
+}
+
+.member-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.member-status-dot {
+  position: absolute;
+  bottom: -0.25rem;
+  right: -0.25rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--white);
+}
+
+.member-status-dot.online {
+  background-color: var(--green-500);
+}
+
+.member-status-dot.away {
+  background-color: var(--yellow-500);
+}
+
+.member-status-dot.offline {
+  background-color: var(--slate-300);
+}
+
+.member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.member-name {
+  color: var(--slate-900);
+  margin-bottom: 0.25rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.member-role {
+  font-size: var(--font-size-sm);
+  color: var(--slate-600);
+}
+
+/* Projects Tab */
+.projects-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-6);
+}
+
+.project-card-lg {
+  padding: var(--spacing-6);
+  border-radius: var(--radius-xl);
+  background-color: var(--white);
+  border: 1px solid var(--slate-100);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.project-card-lg:hover {
+  border-color: var(--indigo-200);
+  box-shadow: var(--shadow-lg);
+}
+
+.project-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-4);
+}
+
+.project-title-lg {
+  font-size: var(--font-size-lg);
+  color: var(--slate-900);
+  margin-bottom: var(--spacing-2);
+  font-weight: var(--font-weight-medium);
+}
+
+.project-progress-lg {
+  font-size: var(--font-size-2xl);
+  color: var(--slate-900);
+}
+
+.project-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+}
+
+.project-participants {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  color: var(--slate-600);
+}
+
+.project-detail-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  color: var(--indigo-600);
+  transition: color 0.2s;
+}
+
+.project-detail-btn:hover {
+  color: var(--indigo-700);
+}
+
+/* Meetings Tab */
+.meetings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-6);
+}
+
+.meeting-card-lg {
+  padding: var(--spacing-6);
+  border-radius: var(--radius-xl);
+  background-color: var(--white);
+  border: 1px solid var(--slate-100);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.meeting-card-lg:hover {
+  border-color: var(--indigo-200);
+  box-shadow: var(--shadow-lg);
+}
+
+.meeting-content-lg {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.meeting-info-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+}
+
+.meeting-icon-box {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-xl);
+  background-color: var(--theme-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meeting-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--theme-600);
+}
+
+.meeting-title-lg {
+  font-size: var(--font-size-lg);
+  color: var(--slate-900);
+  margin-bottom: var(--spacing-2);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Badges */
+.badge-in-progress {
+  background-color: var(--blue-50);
+  color: var(--blue-700);
+  border-color: var(--blue-200);
+}
+
+.badge-review {
+  background-color: var(--purple-50);
+  color: var(--purple-700);
+  border-color: var(--purple-200);
+}
+
+.badge-planning {
+  background-color: var(--slate-50);
+  color: var(--slate-700);
+  border-color: var(--slate-200);
+}

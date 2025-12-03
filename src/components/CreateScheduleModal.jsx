@@ -27,6 +27,7 @@ import {
   X,
   FileText,
 } from "lucide-react";
+import "../styles/CreateScheduleModal.css";
 
 export default function CreateScheduleModal({ isOpen, onClose, onSave }) {
   const [title, setTitle] = useState("");
@@ -76,44 +77,38 @@ export default function CreateScheduleModal({ isOpen, onClose, onSave }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
-        <DialogHeader className="p-6 pb-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-t-lg">
-          <DialogTitle className="text-xl text-white">
+      <DialogContent className="create-schedule-modal-content">
+        <DialogHeader className="create-schedule-header">
+          <DialogTitle className="create-schedule-title">
             새 일정 만들기
           </DialogTitle>
-          <DialogDescription className="text-indigo-100">
+          <DialogDescription className="create-schedule-desc">
             새로운 회의 또는 일정을 생성하세요
           </DialogDescription>
         </DialogHeader>
 
-        <div className="p-6 space-y-6">
+        <div className="create-schedule-body">
           {/* Title */}
-          <div className="space-y-2">
-            <Label
-              htmlFor="title"
-              className="flex items-center gap-2 text-slate-700"
-            >
-              <FileText className="w-4 h-4 text-indigo-600" />
+          <div className="form-group">
+            <Label htmlFor="title" className="form-label">
+              <FileText className="icon-sm icon-indigo" />
               일정 제목
             </Label>
             <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+              className="form-input"
               placeholder="예: 주간 스프린트 회의"
               required
             />
           </div>
 
           {/* Date & Time */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label
-                htmlFor="date"
-                className="flex items-center gap-2 text-slate-700"
-              >
-                <CalendarIcon className="w-4 h-4 text-blue-600" />
+          <div className="form-grid-2">
+            <div className="form-group">
+              <Label htmlFor="date" className="form-label">
+                <CalendarIcon className="icon-sm icon-blue" />
                 날짜
               </Label>
               <Input
@@ -121,17 +116,14 @@ export default function CreateScheduleModal({ isOpen, onClose, onSave }) {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+                className="form-input"
                 required
               />
             </div>
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="time"
-                className="flex items-center gap-2 text-slate-700"
-              >
-                <Clock className="w-4 h-4 text-purple-600" />
+            <div className="form-group">
+              <Label htmlFor="time" className="form-label">
+                <Clock className="icon-sm icon-purple" />
                 시간
               </Label>
               <Input
@@ -139,56 +131,50 @@ export default function CreateScheduleModal({ isOpen, onClose, onSave }) {
                 type="time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+                className="form-input"
                 required
               />
             </div>
           </div>
 
           {/* Duration & Location */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label
-                htmlFor="duration"
-                className="flex items-center gap-2 text-slate-700"
-              >
-                <Clock className="w-4 h-4 text-indigo-600" />
+          <div className="form-grid-2">
+            <div className="form-group">
+              <Label htmlFor="duration" className="form-label">
+                <Clock className="icon-sm icon-indigo" />
                 소요 시간
               </Label>
               <Input
                 id="duration"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+                className="form-input"
                 placeholder="예: 1h, 30m"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="location"
-                className="flex items-center gap-2 text-slate-700"
-              >
-                <MapPin className="w-4 h-4 text-pink-600" />
+            <div className="form-group">
+              <Label htmlFor="location" className="form-label">
+                <MapPin className="icon-sm icon-pink" />
                 장소
               </Label>
               <Input
                 id="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="h-12 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+                className="form-input"
                 placeholder="예: 3층 회의실"
               />
             </div>
           </div>
 
           {/* Team */}
-          <div className="space-y-2">
+          <div className="form-group">
             <Label htmlFor="team" className="text-slate-700">
               팀 선택
             </Label>
             <Select value={team} onValueChange={setTeam}>
-              <SelectTrigger className="h-12 bg-white border-slate-200">
+              <SelectTrigger className="form-input">
                 <SelectValue placeholder="팀을 선택하세요" />
               </SelectTrigger>
               <SelectContent>
@@ -204,29 +190,29 @@ export default function CreateScheduleModal({ isOpen, onClose, onSave }) {
 
           {/* Attendees */}
           <div className="space-y-3">
-            <Label className="flex items-center gap-2 text-slate-700">
-              <Users className="w-4 h-4 text-green-600" />
+            <Label className="form-label">
+              <Users className="icon-sm icon-green" />
               참석자
             </Label>
-            <div className="glass-card rounded-xl p-4 space-y-3">
-              <div className="flex flex-wrap gap-2">
+            <div className="attendees-container glass-card">
+              <div className="attendees-list">
                 {attendees.map((attendee, index) => (
                   <Badge
                     key={index}
                     variant="outline"
-                    className="bg-indigo-50 text-indigo-700 border-indigo-200 pl-3 pr-1 py-1.5 gap-2"
+                    className="attendee-badge"
                   >
                     {attendee}
                     <button
                       onClick={() => handleRemoveAttendee(index)}
-                      className="p-0.5 hover:bg-indigo-200 rounded transition-colors"
+                      className="remove-attendee-button"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="icon-xs" />
                     </button>
                   </Badge>
                 ))}
               </div>
-              <div className="flex gap-2">
+              <div className="add-attendee-row">
                 <Input
                   value={newAttendee}
                   onChange={(e) => setNewAttendee(e.target.value)}
@@ -237,15 +223,15 @@ export default function CreateScheduleModal({ isOpen, onClose, onSave }) {
                     }
                   }}
                   placeholder="참석자 이름 입력"
-                  className="flex-1 bg-white border-slate-200"
+                  className="add-attendee-input"
                 />
                 <Button
                   onClick={handleAddAttendee}
                   type="button"
                   variant="outline"
-                  className="gap-2"
+                  className="add-attendee-button"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="icon-sm" />
                   추가
                 </Button>
               </div>
@@ -253,7 +239,7 @@ export default function CreateScheduleModal({ isOpen, onClose, onSave }) {
           </div>
 
           {/* Description */}
-          <div className="space-y-2">
+          <div className="form-group">
             <Label htmlFor="description" className="text-slate-700">
               설명 (선택사항)
             </Label>
@@ -261,21 +247,25 @@ export default function CreateScheduleModal({ isOpen, onClose, onSave }) {
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="min-h-[100px] bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
+              className="form-textarea"
               placeholder="회의 안건이나 추가 정보를 입력하세요"
             />
           </div>
         </div>
 
         {/* Footer */}
-        <div className="p-6 pt-4 border-t border-slate-200 bg-white rounded-b-lg">
-          <div className="flex gap-3">
-            <Button onClick={onClose} variant="outline" className="flex-1 h-12">
+        <div className="create-schedule-footer">
+          <div className="footer-buttons">
+            <Button
+              onClick={onClose}
+              variant="outline"
+              className="footer-button"
+            >
               취소
             </Button>
             <Button
               onClick={handleSave}
-              className="flex-1 h-12 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
+              className="footer-button submit-button"
               disabled={!title || !date || !time}
             >
               일정 생성

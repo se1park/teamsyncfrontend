@@ -16,6 +16,7 @@ import {
   Target,
   ChevronRight,
 } from "lucide-react";
+import "../styles/TeamDetailPage.css";
 
 export default function TeamDetailPage({
   teamName,
@@ -268,31 +269,31 @@ export default function TeamDetailPage({
   const currentTeam = teamData[teamName] || teamData["개발팀"];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
-      <div className="p-8 space-y-6">
+    <div
+      className="team-detail-container"
+      style={{
+        "--theme-100": `var(--${teamColor}-100)`,
+        "--theme-500": `var(--${teamColor}-500)`,
+        "--theme-600": `var(--${teamColor}-600)`,
+      }}
+    >
+      <div className="team-detail-content">
         {/* Header */}
         <div>
-          <button
-            onClick={onBack}
-            className="text-sm text-slate-600 hover:text-indigo-600 transition-colors mb-3"
-          >
+          <button onClick={onBack} className="team-header-back-btn">
             ← 대시보드로 돌아가기
           </button>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div
-                className={`w-16 h-16 rounded-2xl bg-${teamColor}-100 flex items-center justify-center`}
-              >
-                <div
-                  className={`w-6 h-6 rounded-full bg-${teamColor}-500`}
-                ></div>
+          <div className="team-header-row">
+            <div className="team-info-group">
+              <div className="team-icon-box">
+                <div className="team-icon-dot"></div>
               </div>
               <div>
-                <h1 className="text-3xl text-slate-900">{teamName}</h1>
-                <p className="text-slate-600">{currentTeam.description}</p>
+                <h1 className="team-title">{teamName}</h1>
+                <p className="team-description">{currentTeam.description}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="team-actions">
               <Button
                 onClick={onNavigateToChat}
                 variant="outline"
@@ -300,7 +301,7 @@ export default function TeamDetailPage({
               >
                 <MessageSquare className="w-4 h-4" />팀 채팅
               </Button>
-              <Button className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30">
+              <Button className="invite-btn gap-2">
                 <Plus className="w-4 h-4" />
                 멤버 초대
               </Button>
@@ -309,57 +310,51 @@ export default function TeamDetailPage({
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-3">
-              <div
-                className={`w-10 h-10 rounded-xl bg-${teamColor}-100 flex items-center justify-center`}
-              >
-                <Users className={`w-5 h-5 text-${teamColor}-600`} />
+        <div className="stats-grid">
+          <div className="glass-card stats-card">
+            <div className="stats-card-header">
+              <div className="stats-icon-box theme">
+                <Users className="w-5 h-5" />
               </div>
               <TrendingUp className="w-4 h-4 text-green-500" />
             </div>
-            <h3 className="text-2xl text-slate-900 mb-1">
-              {currentTeam.members.length}
-            </h3>
-            <p className="text-sm text-slate-600">팀 멤버</p>
+            <h3 className="stats-value">{currentTeam.members.length}</h3>
+            <p className="stats-label">팀 멤버</p>
           </div>
 
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-                <Target className="w-5 h-5 text-blue-600" />
+          <div className="glass-card stats-card">
+            <div className="stats-card-header">
+              <div className="stats-icon-box blue">
+                <Target className="w-5 h-5" />
               </div>
               <Badge className="bg-blue-600 text-white text-xs">진행중</Badge>
             </div>
-            <h3 className="text-2xl text-slate-900 mb-1">
-              {currentTeam.projects.length}
-            </h3>
-            <p className="text-sm text-slate-600">진행 프로젝트</p>
+            <h3 className="stats-value">{currentTeam.projects.length}</h3>
+            <p className="stats-label">진행 프로젝트</p>
           </div>
 
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-purple-600" />
+          <div className="glass-card stats-card">
+            <div className="stats-card-header">
+              <div className="stats-icon-box purple">
+                <Calendar className="w-5 h-5" />
               </div>
               <span className="text-xs text-slate-600">이번 주</span>
             </div>
-            <h3 className="text-2xl text-slate-900 mb-1">
+            <h3 className="stats-value">
               {currentTeam.upcomingMeetings.length}
             </h3>
-            <p className="text-sm text-slate-600">예정된 회의</p>
+            <p className="stats-label">예정된 회의</p>
           </div>
 
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-pink-600" />
+          <div className="glass-card stats-card">
+            <div className="stats-card-header">
+              <div className="stats-icon-box pink">
+                <BarChart3 className="w-5 h-5" />
               </div>
               <TrendingUp className="w-4 h-4 text-green-500" />
             </div>
-            <h3 className="text-2xl text-slate-900 mb-1">92%</h3>
-            <p className="text-sm text-slate-600">평균 진행률</p>
+            <h3 className="stats-value">92%</h3>
+            <p className="stats-label">평균 진행률</p>
           </div>
         </div>
 
@@ -367,22 +362,22 @@ export default function TeamDetailPage({
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="space-y-6"
+          className="tabs-container"
         >
-          <TabsList className="glass-card p-1">
-            <TabsTrigger value="overview" className="gap-2">
+          <TabsList className="glass-card tabs-list">
+            <TabsTrigger value="overview" className="tab-trigger">
               <BarChart3 className="w-4 h-4" />
               개요
             </TabsTrigger>
-            <TabsTrigger value="members" className="gap-2">
+            <TabsTrigger value="members" className="tab-trigger">
               <Users className="w-4 h-4" />
               멤버
             </TabsTrigger>
-            <TabsTrigger value="projects" className="gap-2">
+            <TabsTrigger value="projects" className="tab-trigger">
               <Target className="w-4 h-4" />
               프로젝트
             </TabsTrigger>
-            <TabsTrigger value="meetings" className="gap-2">
+            <TabsTrigger value="meetings" className="tab-trigger">
               <Calendar className="w-4 h-4" />
               회의
             </TabsTrigger>
@@ -390,28 +385,23 @@ export default function TeamDetailPage({
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="overview-grid">
               {/* Projects */}
-              <div className="glass-card rounded-2xl p-6">
-                <h2 className="text-xl text-slate-900 mb-4">
-                  진행 중인 프로젝트
-                </h2>
-                <div className="space-y-4">
+              <div className="glass-card section-card">
+                <h2 className="section-title">진행 중인 프로젝트</h2>
+                <div className="projects-list">
                   {currentTeam.projects.map((project) => (
-                    <div
-                      key={project.id}
-                      className="p-4 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-slate-900">{project.name}</h3>
+                    <div key={project.id} className="project-item">
+                      <div className="project-header">
+                        <h3 className="project-name">{project.name}</h3>
                         <Badge
                           variant="outline"
                           className={
                             project.status === "in-progress"
-                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              ? "badge-in-progress"
                               : project.status === "review"
-                              ? "bg-purple-50 text-purple-700 border-purple-200"
-                              : "bg-slate-50 text-slate-700 border-slate-200"
+                              ? "badge-review"
+                              : "badge-planning"
                           }
                         >
                           {project.status === "in-progress"
@@ -422,15 +412,15 @@ export default function TeamDetailPage({
                         </Badge>
                       </div>
                       <div className="space-y-2">
-                        <div className="flex items-center justify-between text-sm">
+                        <div className="project-progress-row">
                           <span className="text-slate-600">진행률</span>
                           <span className="text-slate-900">
                             {project.progress}%
                           </span>
                         </div>
-                        <div className="w-full bg-slate-100 rounded-full h-2">
+                        <div className="progress-bar-bg">
                           <div
-                            className={`bg-gradient-to-r from-${teamColor}-500 to-${teamColor}-600 h-2 rounded-full transition-all`}
+                            className="progress-bar-fill"
                             style={{ width: `${project.progress}%` }}
                           ></div>
                         </div>
@@ -441,16 +431,13 @@ export default function TeamDetailPage({
               </div>
 
               {/* Upcoming Meetings */}
-              <div className="glass-card rounded-2xl p-6">
-                <h2 className="text-xl text-slate-900 mb-4">다가오는 회의</h2>
-                <div className="space-y-3">
+              <div className="glass-card section-card">
+                <h2 className="section-title">다가오는 회의</h2>
+                <div className="meetings-list">
                   {currentTeam.upcomingMeetings.map((meeting) => (
-                    <div
-                      key={meeting.id}
-                      className="p-4 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer"
-                    >
-                      <h3 className="text-slate-900 mb-2">{meeting.title}</h3>
-                      <div className="flex items-center gap-3 text-sm text-slate-600">
+                    <div key={meeting.id} className="meeting-item">
+                      <h3 className="meeting-title">{meeting.title}</h3>
+                      <div className="meeting-info">
                         <span className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
                           {meeting.date}
@@ -465,29 +452,25 @@ export default function TeamDetailPage({
             </div>
 
             {/* Recent Activities */}
-            <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-xl text-slate-900 mb-4">최근 활동</h2>
-              <div className="space-y-4">
+            <div className="glass-card section-card">
+              <h2 className="section-title">최근 활동</h2>
+              <div className="activities-list">
                 {currentTeam.recentActivities.map((activity, index) => (
-                  <div key={index} className="flex gap-3">
-                    <Avatar className="w-10 h-10 flex-shrink-0">
-                      <AvatarFallback
-                        className={`bg-gradient-to-br from-${teamColor}-500 to-${teamColor}-600 text-white`}
-                      >
+                  <div key={index} className="activity-item">
+                    <Avatar className="activity-avatar">
+                      <AvatarFallback className="activity-avatar-fallback">
                         {activity.user.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-slate-900 mb-0.5">
+                    <div className="activity-content">
+                      <p className="activity-text">
                         <span>{activity.user}</span>{" "}
                         <span className="text-slate-600">
                           {activity.action}
                         </span>
                       </p>
-                      <p className="text-sm text-indigo-600 mb-1">
-                        {activity.target}
-                      </p>
-                      <p className="text-xs text-slate-500">{activity.time}</p>
+                      <p className="activity-target">{activity.target}</p>
+                      <p className="activity-time">{activity.time}</p>
                     </div>
                   </div>
                 ))}
@@ -497,50 +480,36 @@ export default function TeamDetailPage({
 
           {/* Members Tab */}
           <TabsContent value="members" className="space-y-6">
-            <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-6">
+            <div className="glass-card section-card">
+              <div className="members-header">
                 <div>
-                  <h2 className="text-xl text-slate-900 mb-1">팀 멤버</h2>
+                  <h2 className="section-title mb-1">팀 멤버</h2>
                   <p className="text-sm text-slate-600">
                     {currentTeam.members.length}명의 멤버가 있습니다
                   </p>
                 </div>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <Input
-                    placeholder="멤버 검색..."
-                    className="pl-10 w-64 bg-white border-slate-200"
-                  />
+                <div className="members-search-wrapper">
+                  <Search className="search-icon" />
+                  <Input placeholder="멤버 검색..." className="search-input" />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="members-grid">
                 {currentTeam.members.map((member) => (
-                  <div
-                    key={member.id}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"
-                  >
-                    <div className="relative">
-                      <Avatar className="w-14 h-14">
-                        <AvatarFallback
-                          className={`bg-gradient-to-br from-${teamColor}-500 to-${teamColor}-600 text-white`}
-                        >
+                  <div key={member.id} className="member-card">
+                    <div className="member-avatar-wrapper">
+                      <Avatar className="member-avatar">
+                        <AvatarFallback className="activity-avatar-fallback">
                           {member.avatar}
                         </AvatarFallback>
                       </Avatar>
                       <div
-                        className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${
-                          member.status === "online"
-                            ? "bg-green-500"
-                            : member.status === "away"
-                            ? "bg-yellow-500"
-                            : "bg-slate-300"
-                        }`}
+                        className={`member-status-dot ${member.status}`}
                       ></div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-slate-900 mb-1">{member.name}</h3>
-                      <p className="text-sm text-slate-600">{member.role}</p>
+                    <div className="member-info">
+                      <h3 className="member-name">{member.name}</h3>
+                      <p className="member-role">{member.role}</p>
                     </div>
                     <Button variant="ghost" size="sm">
                       <MessageSquare className="w-4 h-4" />
@@ -553,32 +522,27 @@ export default function TeamDetailPage({
 
           {/* Projects Tab */}
           <TabsContent value="projects" className="space-y-6">
-            <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl text-slate-900">모든 프로젝트</h2>
-                <Button className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30">
+            <div className="glass-card section-card">
+              <div className="projects-header">
+                <h2 className="section-title mb-0">모든 프로젝트</h2>
+                <Button className="invite-btn gap-2">
                   <Plus className="w-4 h-4" />새 프로젝트
                 </Button>
               </div>
-              <div className="space-y-4">
+              <div className="projects-list">
                 {currentTeam.projects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="p-6 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-lg transition-all cursor-pointer"
-                  >
-                    <div className="flex items-start justify-between mb-4">
+                  <div key={project.id} className="project-card-lg">
+                    <div className="project-card-header">
                       <div>
-                        <h3 className="text-lg text-slate-900 mb-2">
-                          {project.name}
-                        </h3>
+                        <h3 className="project-title-lg">{project.name}</h3>
                         <Badge
                           variant="outline"
                           className={
                             project.status === "in-progress"
-                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              ? "badge-in-progress"
                               : project.status === "review"
-                              ? "bg-purple-50 text-purple-700 border-purple-200"
-                              : "bg-slate-50 text-slate-700 border-slate-200"
+                              ? "badge-review"
+                              : "badge-planning"
                           }
                         >
                           {project.status === "in-progress"
@@ -588,22 +552,22 @@ export default function TeamDetailPage({
                             : "계획"}
                         </Badge>
                       </div>
-                      <span className="text-2xl text-slate-900">
+                      <span className="project-progress-lg">
                         {project.progress}%
                       </span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-3 mb-4">
+                    <div className="progress-bar-bg mb-4">
                       <div
-                        className={`bg-gradient-to-r from-${teamColor}-500 to-${teamColor}-600 h-3 rounded-full transition-all`}
+                        className="progress-bar-fill"
                         style={{ width: `${project.progress}%` }}
                       ></div>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-2 text-slate-600">
+                    <div className="project-footer">
+                      <div className="project-participants">
                         <Users className="w-4 h-4" />
                         <span>3명 참여</span>
                       </div>
-                      <button className="flex items-center gap-1 text-indigo-600 hover:text-indigo-700">
+                      <button className="project-detail-btn">
                         자세히 보기
                         <ChevronRight className="w-4 h-4" />
                       </button>
@@ -616,34 +580,25 @@ export default function TeamDetailPage({
 
           {/* Meetings Tab */}
           <TabsContent value="meetings" className="space-y-6">
-            <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl text-slate-900">팀 회의 일정</h2>
-                <Button className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30">
+            <div className="glass-card section-card">
+              <div className="meetings-header">
+                <h2 className="section-title mb-0">팀 회의 일정</h2>
+                <Button className="invite-btn gap-2">
                   <Plus className="w-4 h-4" />
                   회의 생성
                 </Button>
               </div>
-              <div className="space-y-4">
+              <div className="meetings-list">
                 {currentTeam.upcomingMeetings.map((meeting) => (
-                  <div
-                    key={meeting.id}
-                    className="p-6 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-lg transition-all cursor-pointer"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={`w-12 h-12 rounded-xl bg-${teamColor}-100 flex items-center justify-center`}
-                        >
-                          <Calendar
-                            className={`w-6 h-6 text-${teamColor}-600`}
-                          />
+                  <div key={meeting.id} className="meeting-card-lg">
+                    <div className="meeting-content-lg">
+                      <div className="meeting-info-wrapper">
+                        <div className="meeting-icon-box">
+                          <Calendar className="meeting-icon" />
                         </div>
                         <div>
-                          <h3 className="text-lg text-slate-900 mb-2">
-                            {meeting.title}
-                          </h3>
-                          <div className="flex items-center gap-3 text-sm text-slate-600">
+                          <h3 className="meeting-title-lg">{meeting.title}</h3>
+                          <div className="meeting-info">
                             <span className="flex items-center gap-1">
                               <Clock className="w-4 h-4" />
                               {meeting.date}

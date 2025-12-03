@@ -22,6 +22,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { toast } from "sonner";
+import "../styles/ChatRoom.css";
 
 export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
   const [message, setMessage] = useState("");
@@ -179,94 +180,77 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
-      <div className="flex h-screen">
+    <div className="chat-room-container">
+      <div className="chat-layout">
         {/* Left Sidebar - Room List */}
-        <aside className="w-72 glass-sidebar p-4 space-y-4 overflow-y-auto">
-          <div className="space-y-3">
-            <button
-              onClick={onBack}
-              className="text-sm text-slate-600 hover:text-indigo-600 transition-colors"
-            >
+        <aside className="chat-sidebar glass-sidebar">
+          <div className="sidebar-header">
+            <button onClick={onBack} className="back-button">
               ← 대시보드로 돌아가기
             </button>
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl text-slate-900">회의방</h2>
+            <div className="sidebar-title-row">
+              <h2 className="sidebar-title">회의방</h2>
               <Button
                 size="sm"
                 onClick={handleCreateRoom}
-                className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white"
+                className="new-chat-button"
               >
                 <MessageSquare className="w-4 h-4" />
               </Button>
             </div>
           </div>
 
-          <div className="space-y-1">
+          <div className="room-list">
             {rooms.map((room) => (
               <button
                 key={room.id}
-                className={`w-full text-left p-3 rounded-xl transition-all ${
-                  room.id === 1
-                    ? "bg-white shadow-md border border-indigo-200"
-                    : "bg-white/50 hover:bg-white hover:shadow-md"
-                }`}
+                className={`room-item ${room.id === 1 ? "active" : "inactive"}`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+                <div className="room-item-content">
+                  <div className="room-icon-box">
                     <Hash className="w-5 h-5 text-white" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm text-slate-900 mb-0.5 truncate">
-                      {room.name}
-                    </h3>
-                    <p className="text-xs text-slate-600 truncate">
-                      {room.team}
-                    </p>
+                  <div className="room-info">
+                    <h3 className="room-name">{room.name}</h3>
+                    <p className="room-team">{room.team}</p>
                   </div>
                   {room.unread > 0 && (
-                    <Badge className="bg-indigo-600 text-white text-xs">
-                      {room.unread}
-                    </Badge>
+                    <Badge className="unread-badge">{room.unread}</Badge>
                   )}
                 </div>
               </button>
             ))}
           </div>
 
-          <div className="pt-4 border-t border-slate-200/50">
+          <div className="sidebar-footer">
             <button
               onClick={() => setShowAISummary(!showAISummary)}
-              className="w-full text-left p-3 rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 hover:shadow-md transition-all"
+              className="ai-summary-button"
             >
-              <div className="flex items-center gap-2 mb-2">
+              <div className="ai-summary-header">
                 <Sparkles className="w-4 h-4 text-purple-600" />
-                <span className="text-sm text-purple-900">AI 회의 요약</span>
+                <span className="ai-summary-title">AI 회의 요약</span>
               </div>
-              <p className="text-xs text-purple-700">
-                최근 회의 요약을 확인하세요
-              </p>
+              <p className="ai-summary-desc">최근 회의 요약을 확인하세요</p>
             </button>
           </div>
         </aside>
 
         {/* Main Chat Area */}
-        <main className="flex-1 flex flex-col">
+        <main className="chat-main">
           {/* Chat Header */}
-          <header className="glass-card border-b border-slate-200/50 px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center">
+          <header className="chat-header glass-card">
+            <div className="chat-header-content">
+              <div className="chat-header-info">
+                <div className="chat-header-icon">
                   <Hash className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl text-slate-900">디자인 리뷰</h1>
-                  <p className="text-sm text-slate-600">
-                    디자인팀 • 4명 참여 중
-                  </p>
+                  <h1 className="chat-title">디자인 리뷰</h1>
+                  <p className="chat-subtitle">디자인팀 • 4명 참여 중</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="chat-header-actions">
                 <Button
                   variant="outline"
                   size="sm"
@@ -284,53 +268,37 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
           </header>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="messages-area">
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex gap-3 ${msg.isMe ? "flex-row-reverse" : ""}`}
+                className={`message-row ${msg.isMe ? "me" : "others"}`}
               >
                 {!msg.isMe && (
-                  <Avatar className="w-10 h-10 flex-shrink-0">
-                    <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-blue-500 text-white">
+                  <Avatar className="message-avatar">
+                    <AvatarFallback className="avatar-fallback">
                       {msg.avatar}
                     </AvatarFallback>
                   </Avatar>
                 )}
-                <div
-                  className={`flex-1 max-w-2xl ${
-                    msg.isMe ? "flex flex-col items-end" : ""
-                  }`}
-                >
-                  {!msg.isMe && (
-                    <p className="text-sm text-slate-900 mb-1">{msg.user}</p>
-                  )}
+                <div className="message-content">
+                  {!msg.isMe && <p className="message-sender">{msg.user}</p>}
                   <div
-                    className={`inline-block p-4 rounded-2xl ${
-                      msg.isMe
-                        ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white"
-                        : "glass-card"
-                    }`}
+                    className={`message-bubble ${msg.isMe ? "me" : "others"}`}
                   >
-                    <p
-                      className={`${
-                        msg.isMe ? "text-white" : "text-slate-900"
-                      }`}
-                    >
-                      {msg.message}
-                    </p>
+                    <p>{msg.message}</p>
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">{msg.time}</p>
+                  <p className="message-time">{msg.time}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Message Input */}
-          <div className="glass-card border-t border-slate-200/50 p-4">
-            <div className="flex items-end gap-3">
-              <div className="flex-1">
-                <div className="glass-card rounded-2xl p-4 space-y-3">
+          <div className="input-area glass-card">
+            <div className="input-wrapper">
+              <div className="input-container">
+                <div className="input-box glass-card">
                   <Input
                     placeholder="메시지를 입력하세요..."
                     value={message}
@@ -341,9 +309,9 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
                         handleSendMessage();
                       }
                     }}
-                    className="border-0 bg-transparent p-0 focus-visible:ring-0"
+                    className="message-input"
                   />
-                  <div className="flex items-center gap-2">
+                  <div className="input-actions">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -359,84 +327,77 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
                   </div>
                 </div>
               </div>
-              <Button
-                onClick={handleSendMessage}
-                className="h-14 px-6 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
-              >
+              <Button onClick={handleSendMessage} className="send-button">
                 <Send className="w-5 h-5" />
               </Button>
             </div>
           </div>
         </main>
 
-        {/* Right Panel - AI Suggestions */}
-        <aside className="w-96 glass-sidebar p-6 space-y-6 overflow-y-auto">
+        {/* Right Sidebar - AI Suggestions */}
+        <aside className="ai-sidebar glass-sidebar">
           {/* AI Schedule Suggestion */}
           {showAISuggestion && (
-            <div className="glass-card rounded-2xl p-6 space-y-4 border-2 border-indigo-200 animate-in fade-in slide-in-from-right">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center">
+            <div className="ai-card glass-card animate-in fade-in slide-in-from-right">
+              <div className="ai-card-header">
+                <div className="ai-card-title-group">
+                  <div className="ai-card-icon">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-slate-900">AI 일정 제안</h3>
-                    <p className="text-xs text-slate-600">
+                    <h3 className="ai-card-title">AI 일정 제안</h3>
+                    <p className="ai-card-subtitle">
                       채팅에서 일정을 감지했습니다
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setShowAISuggestion(false)}
-                  className="p-1 hover:bg-white/50 rounded transition-colors"
+                  className="close-button"
                 >
                   <X className="w-4 h-4 text-slate-400" />
                 </button>
               </div>
 
-              <div className="space-y-3">
-                <div className="p-3 rounded-xl bg-white border border-slate-100">
-                  <div className="flex items-center gap-2 mb-2">
+              <div className="ai-content-group">
+                <div className="ai-info-item">
+                  <div className="ai-info-label">
                     <FileText className="w-4 h-4 text-indigo-600" />
-                    <span className="text-sm text-slate-600">제목</span>
+                    <span className="ai-info-text">제목</span>
                   </div>
-                  <p className="text-slate-900">{aiSuggestion.title}</p>
+                  <p className="ai-info-value">{aiSuggestion.title}</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 rounded-xl bg-white border border-slate-100">
-                    <div className="flex items-center gap-2 mb-2">
+                <div className="ai-info-grid">
+                  <div className="ai-info-item">
+                    <div className="ai-info-label">
                       <Calendar className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm text-slate-600">날짜</span>
+                      <span className="ai-info-text">날짜</span>
                     </div>
-                    <p className="text-sm text-slate-900">
-                      {aiSuggestion.date}
-                    </p>
+                    <p className="ai-info-value">{aiSuggestion.date}</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-slate-100">
-                    <div className="flex items-center gap-2 mb-2">
+                  <div className="ai-info-item">
+                    <div className="ai-info-label">
                       <Clock className="w-4 h-4 text-purple-600" />
-                      <span className="text-sm text-slate-600">시간</span>
+                      <span className="ai-info-text">시간</span>
                     </div>
-                    <p className="text-sm text-slate-900">
-                      {aiSuggestion.time}
-                    </p>
+                    <p className="ai-info-value">{aiSuggestion.time}</p>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white border border-slate-100">
-                  <div className="flex items-center gap-2 mb-2">
+                <div className="ai-info-item">
+                  <div className="ai-info-label">
                     <MapPin className="w-4 h-4 text-pink-600" />
-                    <span className="text-sm text-slate-600">장소</span>
+                    <span className="ai-info-text">장소</span>
                   </div>
-                  <p className="text-slate-900">{aiSuggestion.location}</p>
+                  <p className="ai-info-value">{aiSuggestion.location}</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white border border-slate-100">
-                  <div className="flex items-center gap-2 mb-3">
+                <div className="ai-info-item">
+                  <div className="ai-info-label">
                     <Users className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-slate-600">참석자</span>
+                    <span className="ai-info-text">참석자</span>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {aiSuggestion.attendees.map((attendee, index) => (
@@ -451,18 +412,15 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white border border-slate-100">
-                  <div className="flex items-center gap-2 mb-3">
+                <div className="ai-info-item">
+                  <div className="ai-info-label">
                     <CheckCircle2 className="w-4 h-4 text-indigo-600" />
-                    <span className="text-sm text-slate-600">할 일</span>
+                    <span className="ai-info-text">할 일</span>
                   </div>
-                  <ul className="space-y-2">
+                  <ul className="ai-task-list">
                     {aiSuggestion.tasks.map((task, index) => (
-                      <li
-                        key={index}
-                        className="flex items-center gap-2 text-sm text-slate-900"
-                      >
-                        <div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
+                      <li key={index} className="ai-task-item">
+                        <div className="ai-task-dot"></div>
                         {task}
                       </li>
                     ))}
@@ -470,10 +428,10 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
                 </div>
               </div>
 
-              <div className="flex gap-2">
+              <div className="ai-actions">
                 <Button
                   onClick={onOpenCreateScheduleModal}
-                  className="flex-1 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
+                  className="create-schedule-btn"
                 >
                   일정 생성
                 </Button>
@@ -491,34 +449,31 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
 
           {/* AI Meeting Summary */}
           {showAISummary && (
-            <div className="glass-card rounded-2xl p-6 space-y-4 animate-in fade-in slide-in-from-right">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+            <div className="ai-summary-card glass-card animate-in fade-in slide-in-from-right">
+              <div className="ai-card-header">
+                <div className="ai-card-title-group">
+                  <div className="ai-card-icon summary-header-icon">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-slate-900">회의 요약</h3>
-                    <p className="text-xs text-slate-600">{aiSummary.date}</p>
+                    <h3 className="ai-card-title">회의 요약</h3>
+                    <p className="ai-card-subtitle">{aiSummary.date}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setShowAISummary(false)}
-                  className="p-1 hover:bg-white/50 rounded transition-colors"
+                  className="close-button"
                 >
                   <X className="w-4 h-4 text-slate-400" />
                 </button>
               </div>
 
-              <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200">
-                  <h4 className="text-sm text-purple-900 mb-2">주요 내용</h4>
-                  <ul className="space-y-2">
+              <div className="ai-content-group">
+                <div className="summary-section-purple">
+                  <h4 className="ai-summary-title mb-2">주요 내용</h4>
+                  <ul className="summary-list">
                     {aiSummary.keyPoints.map((point, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-2 text-sm text-purple-800"
-                      >
+                      <li key={index} className="summary-item text-purple-800">
                         <ChevronRight className="w-4 h-4 flex-shrink-0 mt-0.5" />
                         {point}
                       </li>
@@ -526,14 +481,11 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
                   </ul>
                 </div>
 
-                <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200">
+                <div className="summary-section-blue">
                   <h4 className="text-sm text-blue-900 mb-2">결정 사항</h4>
-                  <ul className="space-y-2">
+                  <ul className="summary-list">
                     {aiSummary.decisions.map((decision, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-2 text-sm text-blue-800"
-                      >
+                      <li key={index} className="summary-item text-blue-800">
                         <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
                         {decision}
                       </li>
@@ -541,15 +493,12 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
                   </ul>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white border border-slate-200">
+                <div className="summary-section-white">
                   <h4 className="text-sm text-slate-900 mb-3">할 일 목록</h4>
-                  <div className="space-y-2">
+                  <div className="summary-list">
                     {aiSummary.tasks.map((task, index) => (
-                      <div
-                        key={index}
-                        className="p-3 rounded-lg bg-slate-50 border border-slate-100"
-                      >
-                        <div className="flex items-center justify-between mb-1">
+                      <div key={index} className="summary-task-item">
+                        <div className="summary-task-header">
                           <span className="text-sm text-slate-900">
                             {task.task}
                           </span>
@@ -570,7 +519,7 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
               </div>
 
               <Button
-                className="w-full gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                className="full-summary-btn"
                 onClick={handleViewFullSummary}
               >
                 <FileText className="w-4 h-4" />
@@ -580,28 +529,28 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
           )}
 
           {/* Quick Actions */}
-          <div className="glass-card rounded-2xl p-6 space-y-3">
+          <div className="quick-actions-card glass-card">
             <h3 className="text-slate-900 mb-3">빠른 작업</h3>
             <Button
               variant="outline"
-              className="w-full justify-start gap-3 h-auto p-3"
+              className="quick-action-btn"
               onClick={handleCreateSchedule}
             >
               <Calendar className="w-5 h-5 text-indigo-600" />
-              <div className="text-left flex-1">
-                <p className="text-sm text-slate-900">새 일정 만들기</p>
-                <p className="text-xs text-slate-600">수동으로 일정 추가</p>
+              <div className="quick-action-text">
+                <p className="quick-action-title">새 일정 만들기</p>
+                <p className="quick-action-desc">수동으로 일정 추가</p>
               </div>
             </Button>
             <Button
               variant="outline"
-              className="w-full justify-start gap-3 h-auto p-3"
+              className="quick-action-btn"
               onClick={handleEndMeeting}
             >
               <Sparkles className="w-5 h-5 text-purple-600" />
-              <div className="text-left flex-1">
-                <p className="text-sm text-slate-900">회의 종료</p>
-                <p className="text-xs text-slate-600">AI 요약 생성</p>
+              <div className="quick-action-text">
+                <p className="quick-action-title">회의 종료</p>
+                <p className="quick-action-desc">AI 요약 생성</p>
               </div>
             </Button>
           </div>

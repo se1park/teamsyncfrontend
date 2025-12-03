@@ -16,7 +16,7 @@ import {
   MoreHorizontal,
   Filter,
 } from "lucide-react";
-import "./MeetingSummary.css";
+import "../styles/MeetingSummary.css";
 
 export default function MeetingSummary({ onBack }) {
   const [searchQuery, setSearchQuery] = useState("");

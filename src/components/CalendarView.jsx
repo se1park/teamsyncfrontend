@@ -13,6 +13,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import { toast } from "sonner";
+import "../styles/CalendarView.css";
 
 export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
   const [viewMode, setViewMode] = useState("month");
@@ -190,26 +191,23 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
-      <div className="p-8 space-y-6">
+    <div className="calendar-container">
+      <div className="calendar-content">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <button
-              onClick={onBack}
-              className="text-sm text-slate-600 hover:text-indigo-600 transition-colors mb-3"
-            >
+        <div className="calendar-header">
+          <div className="calendar-title-section">
+            <button onClick={onBack} className="back-button">
               ← 대시보드로 돌아가기
             </button>
-            <h1 className="text-3xl text-slate-900">캘린더</h1>
+            <h1 className="calendar-title">캘린더</h1>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="calendar-actions">
             <Button variant="outline" className="gap-2" onClick={handleFilter}>
               <Filter className="w-4 h-4" />
               필터
             </Button>
             <Button
-              className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
+              className="primary-button"
               onClick={onOpenCreateScheduleModal}
             >
               <Plus className="w-4 h-4" />새 일정 만들기
@@ -218,10 +216,10 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
         </div>
 
         {/* Calendar Controls */}
-        <div className="glass-card rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
+        <div className="glass-card calendar-controls-card">
+          <div className="calendar-controls-header">
+            <div className="calendar-navigation">
+              <div className="calendar-nav-group">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -229,7 +227,7 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </Button>
-                <h2 className="text-xl text-slate-900 min-w-[180px] text-center">
+                <h2 className="current-date-display">
                   {currentDate.getFullYear()}년{" "}
                   {monthNames[currentDate.getMonth()]}
                 </h2>
@@ -250,16 +248,14 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
               </Button>
             </div>
 
-            <div className="flex gap-2">
+            <div className="view-toggle-group">
               <Button
                 variant={viewMode === "month" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setViewMode("month")}
-                className={
-                  viewMode === "month"
-                    ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white"
-                    : ""
-                }
+                className={`view-toggle-button ${
+                  viewMode === "month" ? "active" : "inactive"
+                }`}
               >
                 월간
               </Button>
@@ -267,11 +263,9 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                 variant={viewMode === "week" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setViewMode("week")}
-                className={
-                  viewMode === "week"
-                    ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white"
-                    : ""
-                }
+                className={`view-toggle-button ${
+                  viewMode === "week" ? "active" : "inactive"
+                }`}
               >
                 주간
               </Button>
@@ -281,34 +275,31 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
           {/* Month View */}
           {viewMode === "month" && (
             <div>
-              <div className="grid grid-cols-7 gap-2 mb-2">
+              <div className="month-view-grid mb-2">
                 {weekDays.map((day, index) => (
-                  <div
-                    key={index}
-                    className="text-center p-3 text-sm text-slate-600"
-                  >
+                  <div key={index} className="weekday-header">
                     {day}
                   </div>
                 ))}
               </div>
 
-              <div className="grid grid-cols-7 gap-2">
+              <div className="month-view-grid">
                 {days.map((day, index) => (
                   <div
                     key={index}
-                    className={`min-h-[120px] p-3 rounded-xl transition-all ${
+                    className={`day-cell ${
                       day === null
-                        ? "bg-transparent"
+                        ? "empty"
                         : isToday(day)
-                        ? "bg-gradient-to-br from-indigo-100 to-blue-100 border-2 border-indigo-300"
-                        : "bg-white hover:shadow-md hover:border-indigo-200 border border-slate-100"
+                        ? "today"
+                        : "default"
                     }`}
                   >
                     {day !== null && (
                       <>
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="day-number">
                           <span
-                            className={`text-sm ${
+                            className={`${
                               isToday(day)
                                 ? "w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center"
                                 : "text-slate-900"
@@ -317,32 +308,24 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                             {day}
                           </span>
                         </div>
-                        <div className="space-y-1">
+                        <div className="day-events">
                           {getEventsForDay(day)
                             .slice(0, 2)
                             .map((event) => (
                               <div
                                 key={event.id}
-                                className={`p-2 rounded-lg bg-${event.color}-50 border border-${event.color}-200 cursor-pointer hover:shadow-sm transition-all group`}
+                                className={`event-item event-${event.color}`}
                                 onClick={() => handleEventClick(event.title)}
                               >
                                 <div className="flex items-start justify-between gap-1">
-                                  <p
-                                    className={`text-xs text-${event.color}-900 line-clamp-1`}
-                                  >
-                                    {event.title}
-                                  </p>
+                                  <p className="event-title">{event.title}</p>
                                 </div>
-                                <p
-                                  className={`text-xs text-${event.color}-700 mt-0.5`}
-                                >
-                                  {event.time}
-                                </p>
+                                <p className="event-time">{event.time}</p>
                               </div>
                             ))}
                           {getEventsForDay(day).length > 2 && (
                             <button
-                              className="text-xs text-indigo-600 hover:text-indigo-700 w-full text-left pl-2"
+                              className="more-events-btn"
                               onClick={() =>
                                 handleEventMore(getEventsForDay(day)[0].title)
                               }
@@ -362,43 +345,34 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
           {/* Week View */}
           {viewMode === "week" && (
             <div>
-              <div className="grid grid-cols-8 gap-2 mb-2">
-                <div className="text-center p-3 text-sm text-slate-600"></div>
+              <div className="week-view-grid mb-2">
+                <div className="weekday-header"></div>
                 {weekDaysList.map((day, index) => (
                   <div
                     key={index}
-                    className={`text-center p-3 rounded-xl ${
-                      isToday(day)
-                        ? "bg-gradient-to-br from-indigo-600 to-blue-600 text-white"
-                        : "text-slate-600"
+                    className={`week-day-header ${
+                      isToday(day) ? "today" : "default"
                     }`}
                   >
-                    <div className="text-xs mb-1">{weekDays[day.getDay()]}</div>
-                    <div
-                      className={`text-lg ${
-                        isToday(day) ? "text-white" : "text-slate-900"
-                      }`}
-                    >
-                      {day.getDate()}
+                    <div className="week-day-name">
+                      {weekDays[day.getDay()]}
                     </div>
+                    <div className="week-day-date">{day.getDate()}</div>
                   </div>
                 ))}
               </div>
 
-              <div className="grid grid-cols-8 gap-2">
-                <div className="space-y-16 pt-2">
+              <div className="week-view-grid">
+                <div className="time-column">
                   {[...Array(12)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="text-xs text-slate-500 text-right pr-2"
-                    >
+                    <div key={i} className="time-label">
                       {i + 8}:00
                     </div>
                   ))}
                 </div>
 
                 {weekDaysList.map((day, dayIndex) => (
-                  <div key={dayIndex} className="relative">
+                  <div key={dayIndex} className="week-day-column">
                     <div className="space-y-1">
                       {getEventsForDay(day).map((event, eventIndex) => {
                         const hour = parseInt(event.time.split(":")[0]);
@@ -406,20 +380,14 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                         return (
                           <div
                             key={event.id}
-                            className={`absolute left-0 right-0 p-3 rounded-xl bg-${event.color}-50 border-l-4 border-${event.color}-500 cursor-pointer hover:shadow-lg transition-all z-10`}
+                            className={`week-event-item event-${event.color}`}
                             style={{
                               top: `${topPosition}rem`,
                             }}
                             onClick={() => handleEventClick(event.title)}
                           >
-                            <h4
-                              className={`text-sm text-${event.color}-900 mb-1 line-clamp-1`}
-                            >
-                              {event.title}
-                            </h4>
-                            <div
-                              className={`flex items-center gap-2 text-xs text-${event.color}-700`}
-                            >
+                            <h4 className="event-title">{event.title}</h4>
+                            <div className="flex items-center gap-2 event-time">
                               <span className="flex items-center gap-1">
                                 <Clock className="w-3 h-3" />
                                 {event.time}
@@ -431,12 +399,9 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                         );
                       })}
                     </div>
-                    <div className="space-y-16 opacity-20">
+                    <div className="week-grid-lines">
                       {[...Array(12)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="border-t border-slate-200 h-16"
-                        ></div>
+                        <div key={i} className="grid-line"></div>
                       ))}
                     </div>
                   </div>
@@ -447,42 +412,40 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
         </div>
 
         {/* Upcoming Events List */}
-        <div className="glass-card rounded-2xl p-6">
-          <h2 className="text-xl text-slate-900 mb-4">다가오는 일정</h2>
-          <div className="space-y-3">
+        <div className="glass-card upcoming-events-card">
+          <h2 className="section-title">다가오는 일정</h2>
+          <div className="upcoming-events-list">
             {events.slice(0, 4).map((event) => (
               <div
                 key={event.id}
-                className="flex items-center gap-4 p-4 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer"
+                className={`upcoming-event-item event-${event.color}`}
                 onClick={() => handleEventClick(event.title)}
               >
-                <div
-                  className={`w-12 h-12 rounded-xl bg-${event.color}-100 flex items-center justify-center flex-shrink-0`}
-                >
+                <div className="event-icon-box">
                   <Calendar className={`w-6 h-6 text-${event.color}-600`} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-slate-900 mb-1">{event.title}</h3>
-                  <div className="flex items-center gap-3 text-sm text-slate-600">
-                    <span className="flex items-center gap-1">
+                <div className="event-details">
+                  <h3 className="event-title text-lg">{event.title}</h3>
+                  <div className="event-meta">
+                    <span className="event-meta-item">
                       <Clock className="w-4 h-4" />
                       {event.time} ({event.duration})
                     </span>
                     <span>•</span>
-                    <span className="flex items-center gap-1">
+                    <span className="event-meta-item">
                       <MapPin className="w-4 h-4" />
                       {event.location}
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="event-actions">
                   <Badge
                     variant="outline"
                     className={`bg-${event.color}-50 text-${event.color}-700 border-${event.color}-200`}
                   >
                     {event.team}
                   </Badge>
-                  <div className="flex items-center gap-1 text-sm text-slate-600">
+                  <div className="attendees-count">
                     <Users className="w-4 h-4" />
                     {event.attendees}
                   </div>
@@ -496,9 +459,9 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
         </div>
 
         {/* Legend */}
-        <div className="glass-card rounded-2xl p-6">
-          <h3 className="text-slate-900 mb-4">팀별 색상</h3>
-          <div className="flex flex-wrap gap-3">
+        <div className="glass-card legend-card">
+          <h3 className="section-title">팀별 색상</h3>
+          <div className="legend-grid">
             {[
               { name: "개발팀", color: "indigo" },
               { name: "디자인팀", color: "blue" },
@@ -507,14 +470,9 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
               { name: "전체", color: "orange" },
               { name: "개인", color: "green" },
             ].map((team) => (
-              <div
-                key={team.name}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-slate-100"
-              >
-                <div
-                  className={`w-3 h-3 rounded-full bg-${team.color}-500`}
-                ></div>
-                <span className="text-sm text-slate-900">{team.name}</span>
+              <div key={team.name} className="legend-item">
+                <div className={`legend-color bg-${team.color}-500`}></div>
+                <span className="legend-label">{team.name}</span>
               </div>
             ))}
           </div>

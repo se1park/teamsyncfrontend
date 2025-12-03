@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sparkles, Users, Calendar, MessageSquare } from "lucide-react";
-import "./AuthScreen.css";
+import "../styles/AuthScreen.css";
 
 export default function AuthScreen({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);

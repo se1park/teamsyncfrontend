@@ -11,7 +11,7 @@ import {
   Trash2,
   Edit,
 } from "lucide-react";
-import "./TeamManagement.css";
+import "../styles/TeamManagement.css";
 
 export default function TeamManagement({
   onBack,
@@ -134,11 +134,11 @@ export default function TeamManagement({
   const getRoleIcon = (role) => {
     switch (role) {
       case "Owner":
-        return <Crown className="w-4 h-4 text-yellow-600" />;
+        return <Crown className="icon-sm icon-owner" />;
       case "Admin":
-        return <Shield className="w-4 h-4 text-blue-600" />;
+        return <Shield className="icon-sm icon-admin" />;
       default:
-        return <User className="w-4 h-4 text-slate-600" />;
+        return <User className="icon-sm icon-member" />;
     }
   };
 
@@ -170,7 +170,7 @@ export default function TeamManagement({
                 className="add-team-button"
                 onClick={onOpenCreateTeamModal}
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="icon-sm" />
               </button>
             </div>
           </div>
@@ -234,7 +234,7 @@ export default function TeamManagement({
                     </p>
                     <div className="team-stats">
                       <span className="stat-item">
-                        <User className="w-4 h-4" />
+                        <User className="icon-sm" />
                         {selectedTeamData?.members}명
                       </span>
                       <span>•</span>
@@ -244,11 +244,11 @@ export default function TeamManagement({
                 </div>
                 <div className="team-actions">
                   <button className="action-button">
-                    <Edit className="w-4 h-4" />
+                    <Edit className="icon-sm" />
                     편집
                   </button>
                   <button className="action-button danger">
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="icon-sm" />
                   </button>
                 </div>
               </div>
@@ -275,7 +275,7 @@ export default function TeamManagement({
                     className="add-member-button"
                     onClick={onOpenInviteMemberModal}
                   >
-                    <UserPlus className="w-4 h-4" />
+                    <UserPlus className="icon-sm" />
                     멤버 추가
                   </button>
                 </div>
@@ -305,7 +305,7 @@ export default function TeamManagement({
                       </div>
                       <div className="member-meta">
                         <span className="stat-item">
-                          <Mail className="w-3.5 h-3.5" />
+                          <Mail className="icon-xs" />
                           {member.email}
                         </span>
                         <span>•</span>
@@ -317,15 +317,15 @@ export default function TeamManagement({
                       {member.role === "Member" && (
                         <>
                           <button className="icon-button info">
-                            <Shield className="w-4 h-4" />
+                            <Shield className="icon-sm" />
                           </button>
                           <button className="icon-button danger">
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="icon-sm" />
                           </button>
                         </>
                       )}
                       <button className="icon-button">
-                        <MoreVertical className="w-4 h-4" />
+                        <MoreVertical className="icon-sm" />
                       </button>
                     </div>
                   </div>
@@ -339,10 +339,10 @@ export default function TeamManagement({
               <div className="roles-grid">
                 <div className="role-card role-owner">
                   <div className="role-card-header">
-                    <Crown className="w-5 h-5 text-yellow-600" />
-                    <h3 className="role-card-title text-yellow-900">Owner</h3>
+                    <Crown className="icon-md role-icon" />
+                    <h3 className="role-card-title">Owner</h3>
                   </div>
-                  <p className="role-card-desc text-yellow-700">
+                  <p className="role-card-desc">
                     팀의 모든 권한을 가지며, 팀 삭제 및 소유권 이전이
                     가능합니다.
                   </p>
@@ -350,20 +350,20 @@ export default function TeamManagement({
 
                 <div className="role-card role-admin">
                   <div className="role-card-header">
-                    <Shield className="w-5 h-5 text-blue-600" />
-                    <h3 className="role-card-title text-blue-900">Admin</h3>
+                    <Shield className="icon-md role-icon" />
+                    <h3 className="role-card-title">Admin</h3>
                   </div>
-                  <p className="role-card-desc text-blue-700">
+                  <p className="role-card-desc">
                     멤버 추가/제거, 역할 변경 등 팀 관리 권한을 가집니다.
                   </p>
                 </div>
 
                 <div className="role-card role-member">
                   <div className="role-card-header">
-                    <User className="w-5 h-5 text-slate-600" />
-                    <h3 className="role-card-title text-slate-900">Member</h3>
+                    <User className="icon-md role-icon" />
+                    <h3 className="role-card-title">Member</h3>
                   </div>
-                  <p className="role-card-desc text-slate-700">
+                  <p className="role-card-desc">
                     팀의 일반 멤버로, 회의 참여 및 일정 생성이 가능합니다.
                   </p>
                 </div>

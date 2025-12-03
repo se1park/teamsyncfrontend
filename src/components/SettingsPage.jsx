@@ -19,6 +19,7 @@ import {
   Upload,
 } from "lucide-react";
 import { toast } from "sonner";
+import "../styles/SettingsPage.css";
 
 export default function SettingsPage({ onBack }) {
   const [activeTab, setActiveTab] = useState("profile");
@@ -52,24 +53,21 @@ export default function SettingsPage({ onBack }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
-      <div className="p-8 space-y-6">
+    <div className="settings-container">
+      <div className="settings-layout">
         {/* Header */}
         <div>
-          <button
-            onClick={onBack}
-            className="text-sm text-slate-600 hover:text-indigo-600 transition-colors mb-3 flex items-center gap-2"
-          >
-            <ChevronLeft className="w-4 h-4" />
+          <button onClick={onBack} className="back-button">
+            <ChevronLeft className="icon-sm" />
             대시보드로 돌아가기
           </button>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center">
-              <Settings className="w-6 h-6 text-white" />
+          <div className="settings-header-content">
+            <div className="settings-icon-container">
+              <Settings className="icon-lg icon-white" />
             </div>
             <div>
-              <h1 className="text-3xl text-slate-900">설정</h1>
-              <p className="text-slate-600">계정 및 조직 설정을 관리하세요</p>
+              <h1 className="settings-title">설정</h1>
+              <p className="settings-desc">계정 및 조직 설정을 관리하세요</p>
             </div>
           </div>
         </div>
@@ -78,115 +76,107 @@ export default function SettingsPage({ onBack }) {
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="space-y-6"
+          className="settings-tabs"
         >
-          <TabsList className="glass-card p-1 grid grid-cols-5">
-            <TabsTrigger value="profile" className="gap-2">
-              <User className="w-4 h-4" />
+          <TabsList className="glass-card settings-tabs-list">
+            <TabsTrigger value="profile" className="settings-tab-trigger">
+              <User className="icon-sm" />
               <span className="hidden sm:inline">프로필</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="gap-2">
-              <Bell className="w-4 h-4" />
+            <TabsTrigger value="notifications" className="settings-tab-trigger">
+              <Bell className="icon-sm" />
               <span className="hidden sm:inline">알림</span>
             </TabsTrigger>
-            <TabsTrigger value="organization" className="gap-2">
-              <Building2 className="w-4 h-4" />
+            <TabsTrigger value="organization" className="settings-tab-trigger">
+              <Building2 className="icon-sm" />
               <span className="hidden sm:inline">조직</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="gap-2">
-              <Shield className="w-4 h-4" />
+            <TabsTrigger value="security" className="settings-tab-trigger">
+              <Shield className="icon-sm" />
               <span className="hidden sm:inline">보안</span>
             </TabsTrigger>
-            <TabsTrigger value="billing" className="gap-2">
-              <CreditCard className="w-4 h-4" />
+            <TabsTrigger value="billing" className="settings-tab-trigger">
+              <CreditCard className="icon-sm" />
               <span className="hidden sm:inline">요금제</span>
             </TabsTrigger>
           </TabsList>
 
           {/* Profile Tab */}
-          <TabsContent value="profile" className="space-y-6">
-            <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-xl text-slate-900 mb-6">프로필 정보</h2>
+          <TabsContent value="profile" className="tab-content">
+            <div className="glass-card settings-card">
+              <h2 className="section-title">프로필 정보</h2>
 
               {/* Avatar */}
-              <div className="flex items-center gap-6 mb-6 pb-6 border-b border-slate-200">
-                <Avatar className="w-20 h-20">
-                  <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-blue-500 text-white text-2xl">
+              <div className="avatar-section">
+                <Avatar className="avatar-large">
+                  <AvatarFallback className="avatar-fallback-gradient">
                     KM
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
-                  <h3 className="text-slate-900 mb-1">프로필 사진</h3>
-                  <p className="text-sm text-slate-600 mb-3">
-                    PNG, JPG 최대 5MB
-                  </p>
-                  <div className="flex gap-2">
-                    <Button variant="outline" className="gap-2">
-                      <Upload className="w-4 h-4" />
+                  <h3 className="field-label">프로필 사진</h3>
+                  <p className="field-desc">PNG, JPG 최대 5MB</p>
+                  <div className="photo-actions">
+                    <Button variant="outline" className="upload-button">
+                      <Upload className="icon-sm" />
                       사진 업로드
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="text-red-600 hover:bg-red-50"
-                    >
-                      <Trash2 className="w-4 h-4" />
+                    <Button variant="outline" className="delete-photo-button">
+                      <Trash2 className="icon-sm" />
                     </Button>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
+              <div className="form-stack">
+                <div className="form-grid">
+                  <div className="form-group">
                     <Label htmlFor="fullName">이름</Label>
                     <Input
                       id="fullName"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="h-12 bg-white border-slate-200"
+                      className="form-input"
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="form-group">
                     <Label htmlFor="jobTitle">직책</Label>
                     <Input
                       id="jobTitle"
                       value={jobTitle}
                       onChange={(e) => setJobTitle(e.target.value)}
-                      className="h-12 bg-white border-slate-200"
+                      className="form-input"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="form-group">
                   <Label htmlFor="email">이메일</Label>
                   <Input
                     id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 bg-white border-slate-200"
+                    className="form-input"
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div className="form-group">
                   <Label htmlFor="bio">자기소개</Label>
                   <Input
                     id="bio"
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
-                    className="h-12 bg-white border-slate-200"
+                    className="form-input"
                     placeholder="간단한 자기소개를 입력하세요"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-slate-200">
+              <div className="action-bar">
                 <Button variant="outline">취소</Button>
-                <Button
-                  onClick={handleSaveProfile}
-                  className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white"
-                >
-                  <Save className="w-4 h-4" />
+                <Button onClick={handleSaveProfile} className="save-button">
+                  <Save className="icon-sm" />
                   저장
                 </Button>
               </div>
@@ -194,15 +184,15 @@ export default function SettingsPage({ onBack }) {
           </TabsContent>
 
           {/* Notifications Tab */}
-          <TabsContent value="notifications" className="space-y-6">
-            <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-xl text-slate-900 mb-6">알림 설정</h2>
+          <TabsContent value="notifications" className="tab-content">
+            <div className="glass-card settings-card">
+              <h2 className="section-title">알림 설정</h2>
 
-              <div className="space-y-6">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-slate-100">
-                  <div className="flex-1">
-                    <h3 className="text-slate-900 mb-1">이메일 알림</h3>
-                    <p className="text-sm text-slate-600">
+              <div className="notification-list">
+                <div className="notification-item">
+                  <div className="notification-info">
+                    <h3 className="notification-title">이메일 알림</h3>
+                    <p className="notification-desc">
                       새로운 메시지와 업데이트를 이메일로 받습니다
                     </p>
                   </div>
@@ -212,10 +202,10 @@ export default function SettingsPage({ onBack }) {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-slate-100">
-                  <div className="flex-1">
-                    <h3 className="text-slate-900 mb-1">푸시 알림</h3>
-                    <p className="text-sm text-slate-600">
+                <div className="notification-item">
+                  <div className="notification-info">
+                    <h3 className="notification-title">푸시 알림</h3>
+                    <p className="notification-desc">
                       브라우저 푸시 알림을 받습니다
                     </p>
                   </div>
@@ -225,10 +215,10 @@ export default function SettingsPage({ onBack }) {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-slate-100">
-                  <div className="flex-1">
-                    <h3 className="text-slate-900 mb-1">회의 리마인더</h3>
-                    <p className="text-sm text-slate-600">
+                <div className="notification-item">
+                  <div className="notification-info">
+                    <h3 className="notification-title">회의 리마인더</h3>
+                    <p className="notification-desc">
                       예정된 회의 15분 전에 알림을 받습니다
                     </p>
                   </div>
@@ -238,10 +228,10 @@ export default function SettingsPage({ onBack }) {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-slate-100">
-                  <div className="flex-1">
-                    <h3 className="text-slate-900 mb-1">주간 요약</h3>
-                    <p className="text-sm text-slate-600">
+                <div className="notification-item">
+                  <div className="notification-info">
+                    <h3 className="notification-title">주간 요약</h3>
+                    <p className="notification-desc">
                       매주 월요일 활동 요약을 받습니다
                     </p>
                   </div>
@@ -252,13 +242,13 @@ export default function SettingsPage({ onBack }) {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-slate-200">
+              <div className="action-bar">
                 <Button variant="outline">취소</Button>
                 <Button
                   onClick={handleSaveNotifications}
-                  className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white"
+                  className="save-button"
                 >
-                  <Save className="w-4 h-4" />
+                  <Save className="icon-sm" />
                   저장
                 </Button>
               </div>
@@ -266,65 +256,60 @@ export default function SettingsPage({ onBack }) {
           </TabsContent>
 
           {/* Organization Tab */}
-          <TabsContent value="organization" className="space-y-6">
-            <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-xl text-slate-900 mb-6">조직 설정</h2>
+          <TabsContent value="organization" className="tab-content">
+            <div className="glass-card settings-card">
+              <h2 className="section-title">조직 설정</h2>
 
-              <div className="space-y-4">
-                <div className="space-y-2">
+              <div className="form-stack">
+                <div className="form-group">
                   <Label htmlFor="orgName">조직 이름</Label>
                   <Input
                     id="orgName"
                     value={orgName}
                     onChange={(e) => setOrgName(e.target.value)}
-                    className="h-12 bg-white border-slate-200"
+                    className="form-input"
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div className="form-group">
                   <Label htmlFor="orgDomain">조직 도메인</Label>
-                  <div className="flex gap-2">
+                  <div className="domain-input-group">
                     <Input
                       id="orgDomain"
                       value={orgDomain}
                       onChange={(e) => setOrgDomain(e.target.value)}
-                      className="h-12 bg-white border-slate-200 flex-1"
+                      className="form-input flex-1"
                     />
-                    <div className="h-12 px-4 flex items-center bg-slate-100 border border-slate-200 rounded-lg text-sm text-slate-600">
-                      .teamsync.app
-                    </div>
+                    <div className="domain-suffix">.teamsync.app</div>
                   </div>
-                  <p className="text-xs text-slate-600">
+                  <p className="domain-hint">
                     조직 URL: https://{orgDomain}.teamsync.app
                   </p>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-slate-200">
+              <div className="action-bar">
                 <Button variant="outline">취소</Button>
                 <Button
                   onClick={handleSaveOrganization}
-                  className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white"
+                  className="save-button"
                 >
-                  <Save className="w-4 h-4" />
+                  <Save className="icon-sm" />
                   저장
                 </Button>
               </div>
             </div>
 
-            <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-xl text-slate-900 mb-4">위험 영역</h2>
-              <div className="p-4 rounded-xl bg-red-50 border border-red-200">
-                <h3 className="text-red-900 mb-2">조직 삭제</h3>
-                <p className="text-sm text-red-700 mb-4">
+            <div className="glass-card settings-card">
+              <h2 className="section-title">위험 영역</h2>
+              <div className="danger-zone">
+                <h3 className="danger-title">조직 삭제</h3>
+                <p className="danger-desc">
                   조직을 삭제하면 모든 데이터가 영구적으로 삭제됩니다. 이 작업은
                   되돌릴 수 없습니다.
                 </p>
-                <Button
-                  variant="outline"
-                  className="border-red-300 text-red-700 hover:bg-red-100"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
+                <Button variant="outline" className="danger-button">
+                  <Trash2 className="icon-sm mr-2" />
                   조직 삭제
                 </Button>
               </div>
@@ -332,35 +317,32 @@ export default function SettingsPage({ onBack }) {
           </TabsContent>
 
           {/* Security Tab */}
-          <TabsContent value="security" className="space-y-6">
-            <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-xl text-slate-900 mb-6">보안 설정</h2>
+          <TabsContent value="security" className="tab-content">
+            <div className="glass-card settings-card">
+              <h2 className="section-title">보안 설정</h2>
 
-              <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-white border border-slate-100">
-                  <h3 className="text-slate-900 mb-2">비밀번호 변경</h3>
-                  <p className="text-sm text-slate-600 mb-4">
+              <div className="security-list">
+                <div className="security-item">
+                  <h3 className="field-label">비밀번호 변경</h3>
+                  <p className="field-desc">
                     정기적으로 비밀번호를 변경하여 계정을 안전하게 보호하세요
                   </p>
                   <Button variant="outline">비밀번호 변경</Button>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white border border-slate-100">
-                  <h3 className="text-slate-900 mb-2">2단계 인증</h3>
-                  <p className="text-sm text-slate-600 mb-4">
+                <div className="security-item">
+                  <h3 className="field-label">2단계 인증</h3>
+                  <p className="field-desc">
                     추가 보안 레이어로 계정을 보호하세요
                   </p>
-                  <Badge
-                    variant="outline"
-                    className="bg-green-50 text-green-700 border-green-200"
-                  >
+                  <Badge variant="outline" className="badge-active">
                     활성화됨
                   </Badge>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white border border-slate-100">
-                  <h3 className="text-slate-900 mb-2">활성 세션</h3>
-                  <p className="text-sm text-slate-600 mb-4">
+                <div className="security-item">
+                  <h3 className="field-label">활성 세션</h3>
+                  <p className="field-desc">
                     현재 로그인된 모든 기기를 확인하고 관리하세요
                   </p>
                   <Button variant="outline">세션 관리</Button>
@@ -370,47 +352,41 @@ export default function SettingsPage({ onBack }) {
           </TabsContent>
 
           {/* Billing Tab */}
-          <TabsContent value="billing" className="space-y-6">
-            <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-xl text-slate-900 mb-6">요금제 및 결제</h2>
+          <TabsContent value="billing" className="tab-content">
+            <div className="glass-card settings-card">
+              <h2 className="section-title">요금제 및 결제</h2>
 
               {/* Current Plan */}
-              <div className="p-6 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white mb-6">
-                <div className="flex items-start justify-between mb-4">
+              <div className="plan-card">
+                <div className="plan-header">
                   <div>
-                    <Badge className="bg-white/20 text-white border-white/30 mb-3">
-                      현재 플랜
-                    </Badge>
-                    <h3 className="text-2xl mb-2">Premium Plan</h3>
-                    <p className="text-indigo-100">
+                    <Badge className="plan-badge">현재 플랜</Badge>
+                    <h3 className="plan-name">Premium Plan</h3>
+                    <p className="plan-features">
                       무제한 팀, 고급 AI 기능, 우선 지원
                     </p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-3xl mb-1">₩29,000</div>
-                    <div className="text-indigo-100 text-sm">/월</div>
+                  <div className="plan-price-container">
+                    <div className="plan-price">₩29,000</div>
+                    <div className="plan-period">/월</div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between pt-4 border-t border-white/20">
-                  <span className="text-indigo-100 text-sm">
+                <div className="plan-footer">
+                  <span className="plan-next-date">
                     다음 결제일: 2024년 12월 28일
                   </span>
-                  <Button className="bg-white text-indigo-600 hover:bg-indigo-50">
-                    플랜 변경
-                  </Button>
+                  <Button className="change-plan-button">플랜 변경</Button>
                 </div>
               </div>
 
               {/* Payment Method */}
-              <div className="space-y-4">
-                <h3 className="text-slate-900">결제 수단</h3>
-                <div className="p-4 rounded-xl bg-white border border-slate-100 flex items-center gap-4">
-                  <div className="w-12 h-8 rounded bg-slate-900 flex items-center justify-center text-white text-xs">
-                    VISA
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-slate-900">•••• •••• •••• 1234</p>
-                    <p className="text-sm text-slate-600">만료: 12/25</p>
+              <div className="form-stack">
+                <h3 className="field-label">결제 수단</h3>
+                <div className="payment-method">
+                  <div className="card-icon">VISA</div>
+                  <div className="card-info">
+                    <p className="card-number">•••• •••• •••• 1234</p>
+                    <p className="card-expiry">만료: 12/25</p>
                   </div>
                   <Button variant="outline" size="sm">
                     변경
@@ -419,9 +395,9 @@ export default function SettingsPage({ onBack }) {
               </div>
 
               {/* Billing History */}
-              <div className="space-y-4 mt-6">
-                <h3 className="text-slate-900">결제 내역</h3>
-                <div className="space-y-2">
+              <div className="form-stack mt-6">
+                <h3 className="field-label">결제 내역</h3>
+                <div className="billing-list">
                   {[
                     {
                       date: "2024년 11월 28일",
@@ -439,19 +415,14 @@ export default function SettingsPage({ onBack }) {
                       status: "paid",
                     },
                   ].map((item, index) => (
-                    <div
-                      key={index}
-                      className="p-4 rounded-xl bg-white border border-slate-100 flex items-center justify-between"
-                    >
+                    <div key={index} className="billing-item">
                       <div>
-                        <p className="text-slate-900">{item.date}</p>
-                        <p className="text-sm text-slate-600">Premium Plan</p>
+                        <p className="billing-date">{item.date}</p>
+                        <p className="billing-plan">Premium Plan</p>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-slate-900">{item.amount}</span>
-                        <Badge className="bg-green-50 text-green-700 border-green-200">
-                          결제완료
-                        </Badge>
+                      <div className="billing-amount-row">
+                        <span className="billing-amount">{item.amount}</span>
+                        <Badge className="badge-paid">결제완료</Badge>
                         <Button variant="ghost" size="sm">
                           영수증
                         </Button>
