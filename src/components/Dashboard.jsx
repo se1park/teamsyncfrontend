@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
@@ -14,6 +15,9 @@ import {
   ChevronDown,
   MoreHorizontal,
   TrendingUp,
+  LogOut,
+  Building,
+  ArrowLeftRight,
 } from "lucide-react";
 import "../styles/Dashboard.css";
 
@@ -23,6 +27,8 @@ export default function Dashboard({
   onOpenInviteMemberModal,
   onNavigateToTeam,
 }) {
+  const [showTeamDropdown, setShowTeamDropdown] = useState(false);
+
   const upcomingEvents = [
     {
       id: 1,
@@ -115,9 +121,30 @@ export default function Dashboard({
               <h2 className="app-title">TeamSync</h2>
               <p className="app-plan">Premium Plan</p>
             </div>
-            <button className="dropdown-button">
+            <button
+              className="dropdown-button"
+              onClick={() => setShowTeamDropdown(!showTeamDropdown)}
+            >
               <ChevronDown className="icon-sm text-slate-600" />
             </button>
+
+            {showTeamDropdown && (
+              <div className="team-dropdown-menu glass-card">
+                <button className="dropdown-item">
+                  <ArrowLeftRight className="icon-sm" />
+                  워크스페이스 전환
+                </button>
+                <button className="dropdown-item">
+                  <Building className="icon-sm" />
+                  조직 설정
+                </button>
+                <div className="dropdown-divider"></div>
+                <button className="dropdown-item text-red-600">
+                  <LogOut className="icon-sm" />
+                  로그아웃
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

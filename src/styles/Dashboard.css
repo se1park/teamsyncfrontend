@@ -31,6 +31,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-3);
+  position: relative;
 }
 
 .logo-wrapper {
@@ -73,6 +74,54 @@
 
 .dropdown-button:hover {
   background-color: rgba(255, 255, 255, 0.5);
+}
+
+.team-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 14rem; /* w-56 */
+  margin-top: var(--spacing-2);
+  padding: var(--spacing-2);
+  background-color: var(--white);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  color: var(--slate-700);
+  transition: background-color 0.2s;
+  width: 100%;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background-color: var(--slate-50);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--slate-100);
+  margin: var(--spacing-1) 0;
+}
+
+.text-red-600 {
+  color: var(--red-600);
+}
+
+.text-red-600:hover {
+  background-color: var(--red-50);
 }
 
 .nav-menu {
