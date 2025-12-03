@@ -649,3 +649,36 @@
 .bg-slate-300 {
   background-color: var(--slate-300);
 }
+.user-icon {
+  font-size: var(--font-size-sm);
+  color: var(--slate-900);
+}
+
+.dropdown-avatar {
+  width: 1.5rem; /* w-6 */
+  height: 1.5rem; /* h-6 */
+}
+
+.dropdown-avatar-fallback {
+  background-color: var(--indigo-100);
+  color: var(--indigo-700);
+  font-size: var(--font-size-xs);
+}
+
+.dropdown-user-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--slate-900);
+  font-size: var(--font-size-sm);
+}
+
+.dropdown-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+
+.dropdown-user-email {
+  font-size: var(--font-size-xs);
+  color: var(--slate-500);
+}

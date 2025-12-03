@@ -29,63 +29,9 @@ export default function Dashboard({
 }) {
   const [showTeamDropdown, setShowTeamDropdown] = useState(false);
 
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: "주간 스프린트 회의",
-      time: "오늘 오후 2:00",
-      team: "개발팀",
-      attendees: 5,
-      color: "indigo",
-    },
-    {
-      id: 2,
-      title: "프로젝트 킥오프",
-      time: "내일 오전 10:00",
-      team: "디자인팀",
-      attendees: 8,
-      color: "blue",
-    },
-    {
-      id: 3,
-      title: "월간 리뷰",
-      time: "금요일 오후 4:00",
-      team: "마케팅팀",
-      attendees: 12,
-      color: "purple",
-    },
-  ];
+  const upcomingEvents = [];
 
-  const recentActivities = [
-    {
-      id: 1,
-      user: "김민수",
-      action: "회의 요약을 생성했습니다",
-      target: "주간 스프린트 회의",
-      time: "5분 전",
-    },
-    {
-      id: 2,
-      user: "이지은",
-      action: "일정을 생성했습니다",
-      target: "프로젝트 킥오프",
-      time: "15분 전",
-    },
-    {
-      id: 3,
-      user: "박서준",
-      action: "새 팀원을 초대했습니다",
-      target: "개발팀",
-      time: "1시간 전",
-    },
-    {
-      id: 4,
-      user: "최유진",
-      action: "메시지를 남겼습니다",
-      target: "디자인 리뷰",
-      time: "2시간 전",
-    },
-  ];
+  const recentActivities = [];
 
   const activeRooms = [
     { id: 1, name: "디자인 리뷰", members: 4, unread: 3, team: "디자인팀" },
@@ -130,6 +76,20 @@ export default function Dashboard({
 
             {showTeamDropdown && (
               <div className="team-dropdown-menu glass-card">
+                <button className="dropdown-item">
+                  <Avatar className="dropdown-avatar">
+                    <AvatarFallback className="dropdown-avatar-fallback">
+                      KM
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="dropdown-user-info">
+                    <span className="dropdown-user-name">김민수</span>
+                    <span className="dropdown-user-email">
+                      minsu@teamsync.com
+                    </span>
+                  </div>
+                </button>
+                <div className="dropdown-divider"></div>
                 <button className="dropdown-item">
                   <ArrowLeftRight className="icon-sm" />
                   워크스페이스 전환
