@@ -37,7 +37,7 @@
   justify-content: center;
 }
 
-.header-title {
+.schedule-modal-title {
   font-size: var(--font-size-xl);
   color: var(--white);
   margin: 0;

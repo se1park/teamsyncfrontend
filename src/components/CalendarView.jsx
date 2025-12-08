@@ -11,6 +11,7 @@ import {
   MapPin,
   Users,
   MoreHorizontal,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import "../styles/CalendarView.css";
@@ -18,6 +19,9 @@ import "../styles/CalendarView.css";
 export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
   const [viewMode, setViewMode] = useState("month");
   const [currentDate, setCurrentDate] = useState(new Date(2024, 10, 28));
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleFilter = () => {
     toast.info("필터 옵션");
@@ -190,6 +194,23 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
     );
   };
 
+  const handleDateClick = (day) => {
+    if (day === null) return;
+
+    const dayEvents = getEventsForDay(day);
+    setSelectedDate({
+      day: day,
+      month: currentDate.getMonth(),
+      year: currentDate.getFullYear(),
+      events: dayEvents,
+    });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="calendar-container">
       <div className="calendar-content">
@@ -294,6 +315,7 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                         ? "today"
                         : "default"
                     }`}
+                    onClick={() => handleDateClick(day)}
                   >
                     {day !== null && (
                       <>
@@ -315,7 +337,10 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                               <div
                                 key={event.id}
                                 className={`event-item event-${event.color}`}
-                                onClick={() => handleEventClick(event.title)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleEventClick(event.title);
+                                }}
                               >
                                 <div className="flex items-start justify-between gap-1">
                                   <p className="event-title">{event.title}</p>
@@ -326,9 +351,10 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                           {getEventsForDay(day).length > 2 && (
                             <button
                               className="more-events-btn"
-                              onClick={() =>
-                                handleEventMore(getEventsForDay(day)[0].title)
-                              }
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDateClick(day);
+                              }}
                             >
                               +{getEventsForDay(day).length - 2}개 더보기
                             </button>
@@ -475,6 +501,73 @@ export default function CalendarView({ onBack, onOpenCreateScheduleModal }) {
                 <span className="legend-label">{team.name}</span>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Event Modal */}
+      <div
+        className={`mobile-event-modal-overlay ${isModalOpen ? "active" : ""}`}
+      >
+        <div className="mobile-event-modal-content">
+          <div className="modal-header">
+            <span className="modal-date-title">
+              {selectedDate
+                ? `${monthNames[selectedDate.month]} ${selectedDate.day}일`
+                : ""}
+            </span>
+            <button className="modal-close-btn" onClick={closeModal}>
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <div className="modal-body">
+            {selectedDate && selectedDate.events.length > 0 ? (
+              selectedDate.events.map((event) => (
+                <div
+                  key={event.id}
+                  className={`upcoming-event-item event-${event.color}`}
+                  onClick={() => handleEventClick(event.title)}
+                >
+                  <div className="event-details">
+                    <div className="flex justify-between items-center mb-1">
+                      <h3 className="event-title text-base font-semibold">
+                        {event.title}
+                      </h3>
+                      <Badge
+                        variant="outline"
+                        className={`text-xs bg-${event.color}-50 text-${event.color}-700 border-${event.color}-200`}
+                      >
+                        {event.team}
+                      </Badge>
+                    </div>
+                    <div className="event-meta text-xs">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {event.time}
+                      </span>
+                      <span>•</span>
+                      <span>{event.location}</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="no-events-message">
+                <p>등록된 일정이 없습니다.</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-4"
+                  onClick={() => {
+                    closeModal();
+                    onOpenCreateScheduleModal();
+                  }}
+                >
+                  <Plus className="w-3 h-3 mr-1" /> 새 일정 추가
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

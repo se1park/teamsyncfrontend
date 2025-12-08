@@ -78,7 +78,9 @@ export default function ScheduleModal({ isOpen, onClose, onSave }) {
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <DialogTitle className="header-title">AI 일정 생성</DialogTitle>
+              <DialogTitle className="schedule-modal-title">
+                AI 일정 생성
+              </DialogTitle>
               <DialogDescription className="header-description">
                 채팅에서 감지된 정보로 자동 생성되었습니다
               </DialogDescription>

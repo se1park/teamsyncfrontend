@@ -18,6 +18,8 @@ import {
   LogOut,
   Building,
   ArrowLeftRight,
+  Menu,
+  X,
 } from "lucide-react";
 import "../styles/Dashboard.css";
 
@@ -28,6 +30,7 @@ export default function Dashboard({
   onNavigateToTeam,
 }) {
   const [showTeamDropdown, setShowTeamDropdown] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const upcomingEvents = [];
 
@@ -55,9 +58,25 @@ export default function Dashboard({
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
-      <aside className="dashboard-sidebar glass-sidebar">
-        {/* Organization Header */}
+      {isMobileSidebarOpen && (
+        <div
+          className="mobile-overlay"
+          onClick={() => setIsMobileSidebarOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`dashboard-sidebar glass-sidebar ${
+          isMobileSidebarOpen ? "open" : ""
+        }`}
+      >
+        <button
+          className="mobile-close-btn"
+          onClick={() => setIsMobileSidebarOpen(false)}
+        >
+          <X className="icon-md text-slate-600" />
+        </button>
+
         <div className="sidebar-header">
           <div className="logo-row">
             <div className="logo-wrapper">
@@ -108,7 +127,6 @@ export default function Dashboard({
           </div>
         </div>
 
-        {/* Navigation */}
         <nav className="nav-menu">
           <button
             onClick={() => onNavigate("dashboard")}
@@ -148,7 +166,6 @@ export default function Dashboard({
           </button>
         </nav>
 
-        {/* Teams Section */}
         <div className="teams-section">
           <div className="teams-header">
             <span className="teams-label">팀</span>
@@ -173,7 +190,6 @@ export default function Dashboard({
           </div>
         </div>
 
-        {/* Settings */}
         <div className="settings-section">
           <button
             onClick={() => onNavigate("settings")}
@@ -185,35 +201,43 @@ export default function Dashboard({
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="dashboard-main">
-        {/* Header */}
         <div className="dashboard-header">
-          <div>
-            <h1 className="header-title">대시보드</h1>
-            <p className="header-desc">
-              안녕하세요, 오늘도 좋은 하루 되세요! 👋
-            </p>
+          <div className="header-left-content">
+            <button
+              className="mobile-menu-btn"
+              onClick={() => setIsMobileSidebarOpen(true)}
+            >
+              <Menu className="icon-lg text-slate-700" />
+            </button>
+
+            <div className="header-titles">
+              <h1 className="header-title">대시보드</h1>
+              <p className="header-desc">
+                안녕하세요, 오늘도 좋은 하루 되세요! 👋
+              </p>
+            </div>
           </div>
+
           <div className="header-actions">
             <Button
               variant="outline"
               className="gap-2 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"
               onClick={onOpenCreateTeamModal}
             >
-              <Plus className="icon-sm" />팀 생성
+              <Plus className="icon-sm" />
+              <span className="hidden sm:inline">팀 생성</span>
             </Button>
             <Button
               className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
               onClick={onOpenInviteMemberModal}
             >
               <UserPlus className="icon-sm" />
-              멤버 초대
+              <span className="hidden sm:inline">멤버 초대</span>
             </Button>
           </div>
         </div>
 
-        {/* Stats Cards */}
         <div className="stats-grid">
           <button
             onClick={() => onNavigate("calendar")}
@@ -272,9 +296,7 @@ export default function Dashboard({
           </button>
         </div>
 
-        {/* Content Grid */}
         <div className="content-grid">
-          {/* Upcoming Events */}
           <div className="col-span-2 section-card glass-card">
             <div className="section-header">
               <h2 className="section-title">다가오는 일정</h2>
@@ -328,7 +350,6 @@ export default function Dashboard({
             </div>
           </div>
 
-          {/* Team Members */}
           <div className="section-card glass-card">
             <div className="section-header">
               <h2 className="section-title">팀 멤버</h2>
@@ -371,7 +392,6 @@ export default function Dashboard({
             </div>
           </div>
 
-          {/* Active Rooms */}
           <div className="col-span-2 section-card glass-card">
             <div className="section-header">
               <h2 className="section-title">활성 회의방</h2>
@@ -410,7 +430,6 @@ export default function Dashboard({
             </div>
           </div>
 
-          {/* Recent Activity */}
           <div className="section-card glass-card">
             <h2 className="section-title mb-6">최근 활동</h2>
             <div className="activity-list">
