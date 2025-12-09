@@ -27,6 +27,10 @@ export default function App() {
     setCurrentView("dashboard");
   };
 
+  const handleLogout = () => {
+    setCurrentView("auth");
+  };
+
   const handleNavigate = (view) => {
     setCurrentView(view);
   };
@@ -87,6 +91,7 @@ export default function App() {
           onOpenCreateTeamModal={handleOpenCreateTeamModal}
           onOpenInviteMemberModal={handleOpenInviteMemberModal}
           onNavigateToTeam={handleNavigateToTeam}
+          onLogout={handleLogout}
         />
       )}
       {currentView === "teams" && (

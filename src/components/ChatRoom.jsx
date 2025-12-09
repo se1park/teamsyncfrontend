@@ -20,6 +20,8 @@ import {
   Edit,
   FileText,
   ChevronRight,
+  Menu, // 추가됨: 모바일 왼쪽 메뉴 아이콘
+  PanelRight, // 추가됨: 모바일 오른쪽 메뉴 아이콘
 } from "lucide-react";
 import { toast } from "sonner";
 import "../styles/ChatRoom.css";
@@ -29,6 +31,10 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
   const [showAISuggestion, setShowAISuggestion] = useState(true);
   const [showAISummary, setShowAISummary] = useState(false);
   const [showParticipants, setShowParticipants] = useState(false);
+
+  // ★ 반응형 제어를 위한 상태 추가
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
 
   const rooms = [
     { id: 1, name: "디자인 리뷰", team: "디자인팀", unread: 0 },
@@ -181,9 +187,33 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
 
   return (
     <div className="chat-room-container">
+      {/* ★ 모바일용 오버레이 (사이드바 열렸을 때 배경 어둡게 처리) */}
+      {(isLeftSidebarOpen || isRightSidebarOpen) && (
+        <div
+          className="mobile-overlay visible"
+          onClick={() => {
+            setIsLeftSidebarOpen(false);
+            setIsRightSidebarOpen(false);
+          }}
+        />
+      )}
+
       <div className="chat-layout">
         {/* Left Sidebar - Room List */}
-        <aside className="chat-sidebar glass-sidebar">
+        {/* 모바일 상태 클래스 추가 */}
+        <aside
+          className={`chat-sidebar glass-sidebar ${
+            isLeftSidebarOpen ? "mobile-open" : ""
+          }`}
+        >
+          {/* 모바일용 닫기 버튼 */}
+          <button
+            className="mobile-close-btn md:hidden"
+            onClick={() => setIsLeftSidebarOpen(false)}
+          >
+            <X className="w-5 h-5 text-slate-500" />
+          </button>
+
           <div className="sidebar-header">
             <button onClick={onBack} className="back-button">
               ← 대시보드로 돌아가기
@@ -205,6 +235,7 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
               <button
                 key={room.id}
                 className={`room-item ${room.id === 1 ? "active" : "inactive"}`}
+                onClick={() => setIsLeftSidebarOpen(false)} // 모바일에서 방 선택 시 메뉴 닫기
               >
                 <div className="room-item-content">
                   <div className="room-icon-box">
@@ -224,7 +255,10 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
 
           <div className="sidebar-footer">
             <button
-              onClick={() => setShowAISummary(!showAISummary)}
+              onClick={() => {
+                setShowAISummary(!showAISummary);
+                setIsLeftSidebarOpen(false);
+              }}
               className="ai-summary-button"
             >
               <div className="ai-summary-header">
@@ -242,6 +276,14 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
           <header className="chat-header glass-card">
             <div className="chat-header-content">
               <div className="chat-header-info">
+                {/* ★ 모바일용 왼쪽 사이드바 토글 버튼 */}
+                <button
+                  className="mobile-menu-btn"
+                  onClick={() => setIsLeftSidebarOpen(true)}
+                >
+                  <Menu className="w-6 h-6 text-slate-700" />
+                </button>
+
                 <div className="chat-header-icon">
                   <Hash className="w-6 h-6 text-white" />
                 </div>
@@ -251,16 +293,33 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
                 </div>
               </div>
               <div className="chat-header-actions">
+                {/* 모바일에서는 '참여자' 텍스트 숨김 */}
                 <Button
                   variant="outline"
                   size="sm"
-                  className="gap-2"
+                  className="gap-2 hidden sm:flex"
                   onClick={handleShowParticipants}
                 >
                   <Users className="w-4 h-4" />
                   참여자
                 </Button>
-                <Button variant="outline" size="sm" onClick={handleSettings}>
+
+                {/* ★ 모바일용 오른쪽 AI 사이드바 토글 버튼 */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="lg:hidden"
+                  onClick={() => setIsRightSidebarOpen(true)}
+                >
+                  <PanelRight className="w-5 h-5 text-indigo-600" />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSettings}
+                  className="hidden sm:flex"
+                >
                   <Settings className="w-4 h-4" />
                 </Button>
               </div>
@@ -319,7 +378,7 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
                       onClick={handleAttachFile}
                     >
                       <Paperclip className="w-4 h-4" />
-                      파일
+                      <span className="hidden sm:inline">파일</span>
                     </Button>
                     <Button variant="ghost" size="sm" onClick={handleAddEmoji}>
                       <Smile className="w-4 h-4" />
@@ -335,7 +394,20 @@ export default function ChatRoom({ onBack, onOpenCreateScheduleModal }) {
         </main>
 
         {/* Right Sidebar - AI Suggestions */}
-        <aside className="ai-sidebar glass-sidebar">
+        {/* 모바일 상태 클래스 추가 */}
+        <aside
+          className={`ai-sidebar glass-sidebar ${
+            isRightSidebarOpen ? "mobile-open" : ""
+          }`}
+        >
+          {/* 모바일용 닫기 버튼 */}
+          <button
+            className="mobile-close-btn lg:hidden absolute top-4 right-4"
+            onClick={() => setIsRightSidebarOpen(false)}
+          >
+            <X className="w-5 h-5 text-slate-500" />
+          </button>
+
           {/* AI Schedule Suggestion */}
           {showAISuggestion && (
             <div className="ai-card glass-card animate-in fade-in slide-in-from-right">

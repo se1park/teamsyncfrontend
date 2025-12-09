@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
@@ -28,9 +29,31 @@ export default function Dashboard({
   onOpenCreateTeamModal,
   onOpenInviteMemberModal,
   onNavigateToTeam,
+  onLogout,
 }) {
+  const userName = localStorage.getItem("userName") || "사용자";
+  const userEmail = localStorage.getItem("userEmail") || "user@teamsync.com";
   const [showTeamDropdown, setShowTeamDropdown] = useState(false);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("/api/auth/logout");
+
+      // 토큰 삭제
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
+      // 로그인 화면으로 이동
+      if (onLogout) onLogout();
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+      alert("로그아웃 중 오류가 발생했습니다.");
+    }
+  };
 
   const upcomingEvents = [];
 
@@ -58,25 +81,26 @@ export default function Dashboard({
 
   return (
     <div className="dashboard-container">
-      {isMobileSidebarOpen && (
-        <div
-          className="mobile-overlay"
-          onClick={() => setIsMobileSidebarOpen(false)}
-        />
+      {/* Mobile Sidebar Overlay */}
+      {isMobileMenuOpen && (
+        <div className="mobile-overlay" onClick={closeMobileMenu} />
       )}
 
+      {/* Sidebar */}
       <aside
         className={`dashboard-sidebar glass-sidebar ${
-          isMobileSidebarOpen ? "open" : ""
+          isMobileMenuOpen ? "open" : ""
         }`}
       >
+        {/* Mobile Close Button */}
         <button
-          className="mobile-close-btn"
-          onClick={() => setIsMobileSidebarOpen(false)}
+          className="mobile-close-btn md:hidden"
+          onClick={closeMobileMenu}
         >
-          <X className="icon-md text-slate-600" />
+          <X className="icon-md text-slate-500" />
         </button>
 
+        {/* Organization Header */}
         <div className="sidebar-header">
           <div className="logo-row">
             <div className="logo-wrapper">
@@ -98,14 +122,12 @@ export default function Dashboard({
                 <button className="dropdown-item">
                   <Avatar className="dropdown-avatar">
                     <AvatarFallback className="dropdown-avatar-fallback">
-                      KM
+                      {userName.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="dropdown-user-info">
-                    <span className="dropdown-user-name">김민수</span>
-                    <span className="dropdown-user-email">
-                      minsu@teamsync.com
-                    </span>
+                    <span className="dropdown-user-name">{userName}</span>
+                    <span className="dropdown-user-email">{userEmail}</span>
                   </div>
                 </button>
                 <div className="dropdown-divider"></div>
@@ -118,7 +140,10 @@ export default function Dashboard({
                   조직 설정
                 </button>
                 <div className="dropdown-divider"></div>
-                <button className="dropdown-item text-red-600">
+                <button
+                  className="dropdown-item text-red-600"
+                  onClick={handleLogout}
+                >
                   <LogOut className="icon-sm" />
                   로그아웃
                 </button>
@@ -127,6 +152,7 @@ export default function Dashboard({
           </div>
         </div>
 
+        {/* Navigation */}
         <nav className="nav-menu">
           <button
             onClick={() => onNavigate("dashboard")}
@@ -166,6 +192,7 @@ export default function Dashboard({
           </button>
         </nav>
 
+        {/* Teams Section */}
         <div className="teams-section">
           <div className="teams-header">
             <span className="teams-label">팀</span>
@@ -190,6 +217,7 @@ export default function Dashboard({
           </div>
         </div>
 
+        {/* Settings */}
         <div className="settings-section">
           <button
             onClick={() => onNavigate("settings")}
@@ -201,43 +229,42 @@ export default function Dashboard({
         </div>
       </aside>
 
+      {/* Main Content */}
       <main className="dashboard-main">
+        {/* Header */}
         <div className="dashboard-header">
-          <div className="header-left-content">
-            <button
-              className="mobile-menu-btn"
-              onClick={() => setIsMobileSidebarOpen(true)}
-            >
-              <Menu className="icon-lg text-slate-700" />
-            </button>
-
-            <div className="header-titles">
-              <h1 className="header-title">대시보드</h1>
-              <p className="header-desc">
-                안녕하세요, 오늘도 좋은 하루 되세요! 👋
-              </p>
+          <div>
+            <div className="header-left-content">
+              <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
+                <Menu className="icon-md text-slate-700" />
+              </button>
+              <div>
+                <h1 className="header-title">대시보드</h1>
+                <p className="header-desc">
+                  안녕하세요, 오늘도 좋은 하루 되세요! 👋
+                </p>
+              </div>
             </div>
           </div>
-
           <div className="header-actions">
             <Button
               variant="outline"
               className="gap-2 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"
               onClick={onOpenCreateTeamModal}
             >
-              <Plus className="icon-sm" />
-              <span className="hidden sm:inline">팀 생성</span>
+              <Plus className="icon-sm" />팀 생성
             </Button>
             <Button
               className="gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/30"
               onClick={onOpenInviteMemberModal}
             >
               <UserPlus className="icon-sm" />
-              <span className="hidden sm:inline">멤버 초대</span>
+              멤버 초대
             </Button>
           </div>
         </div>
 
+        {/* Stats Cards */}
         <div className="stats-grid">
           <button
             onClick={() => onNavigate("calendar")}
@@ -296,7 +323,9 @@ export default function Dashboard({
           </button>
         </div>
 
+        {/* Content Grid */}
         <div className="content-grid">
+          {/* Upcoming Events */}
           <div className="col-span-2 section-card glass-card">
             <div className="section-header">
               <h2 className="section-title">다가오는 일정</h2>
@@ -350,6 +379,7 @@ export default function Dashboard({
             </div>
           </div>
 
+          {/* Team Members */}
           <div className="section-card glass-card">
             <div className="section-header">
               <h2 className="section-title">팀 멤버</h2>
@@ -392,6 +422,7 @@ export default function Dashboard({
             </div>
           </div>
 
+          {/* Active Rooms */}
           <div className="col-span-2 section-card glass-card">
             <div className="section-header">
               <h2 className="section-title">활성 회의방</h2>
@@ -430,6 +461,7 @@ export default function Dashboard({
             </div>
           </div>
 
+          {/* Recent Activity */}
           <div className="section-card glass-card">
             <h2 className="section-title mb-6">최근 활동</h2>
             <div className="activity-list">
